@@ -5546,6 +5546,22 @@ a.news-record-scroll-to-top.visible {
 .posts-carousel-slider {
 	margin: 0 auto;
 	max-width: 100%;
+	overflow: hidden;
+}
+
+/* Fix for slick track to ensure horizontal layout */
+.posts-carousel-slider .slick-track {
+	display: flex !important;
+	flex-wrap: nowrap !important;
+	align-items: stretch !important;
+}
+
+/* Ensure slides have proper width and height */
+.posts-carousel-slider .slick-slide {
+	height: auto !important;
+	display: inline-block !important;
+	float: none !important;
+	vertical-align: top !important;
 }
 
 /* Enhanced Slick slider styling */
