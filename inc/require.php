@@ -21,6 +21,12 @@ require get_template_directory() . '/inc/template-tags.php';
 require get_template_directory() . '/inc/template-functions.php';
 
 /**
+ * Shared helpers for queries and cards.
+ */
+require get_template_directory() . '/inc/section-helpers.php';
+require get_template_directory() . '/inc/partials/cards.php';
+
+/**
  * Additions Customizer Settings.
  */
 require get_template_directory() . '/inc/customizer-settings/customizer.php';

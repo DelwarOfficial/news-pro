@@ -27,6 +27,12 @@ require get_template_directory() . '/inc/custom-widgets/tabbed-news-widget.php';
 // Tile Posts Widget.
 require get_template_directory() . '/inc/custom-widgets/tile-posts-widget.php';
 
+// Popular Numbered Widget.
+require get_template_directory() . '/inc/custom-widgets/popular-numbered-widget.php';
+
+// Ad Slot Widget.
+require get_template_directory() . '/inc/custom-widgets/ad-slot-widget.php';
+
 /**
  * Register Widgets
  */
@@ -49,6 +55,10 @@ function news_record_register_widgets() {
 	register_widget( 'News_Record_Tabbed_News_Widget' );
 
 	register_widget( 'News_Record_Tile_Posts_Widget' );
+
+	register_widget( 'News_Record_Popular_Numbered_Widget' );
+
+	register_widget( 'News_Record_Ad_Slot_Widget' );
 
 }
 add_action( 'widgets_init', 'news_record_register_widgets' );
