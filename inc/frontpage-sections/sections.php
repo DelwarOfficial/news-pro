@@ -18,8 +18,8 @@ require get_template_directory() . '/inc/frontpage-sections/posts-carousel.php';
 
 require get_template_directory() . '/inc/frontpage-sections/videos.php';
 
-// Category-based sections using reusable engine.
-require get_template_directory() . '/inc/frontpage-sections/world-news-section.php';
+// Default Layout 3 Column (replaces World News, Business, Technology, Sports).
+require get_template_directory() . '/inc/frontpage-sections/tri-column-section.php';
 
 require get_template_directory() . '/inc/frontpage-sections/politics-section.php';
 
@@ -31,19 +31,13 @@ require get_template_directory() . '/inc/frontpage-sections/interviews-section.p
 
 require get_template_directory() . '/inc/frontpage-sections/spotlight-section.php';
 
-require get_template_directory() . '/inc/frontpage-sections/sports-section.php';
-
 require get_template_directory() . '/inc/frontpage-sections/in-depth-section.php';
-
-require get_template_directory() . '/inc/frontpage-sections/technology-section.php';
 
 require get_template_directory() . '/inc/frontpage-sections/featured-category.php';
 
 require get_template_directory() . '/inc/frontpage-sections/entertainment-section.php';
 
 require get_template_directory() . '/inc/frontpage-sections/travel-section.php';
-
-require get_template_directory() . '/inc/frontpage-sections/business-section.php';
 
 // Widget areas.
 require get_template_directory() . '/inc/frontpage-sections/widgets-area/main-widgets-area.php';

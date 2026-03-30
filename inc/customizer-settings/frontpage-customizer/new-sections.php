@@ -711,6 +711,174 @@ function news_record_videos_content_type_category( $control ) {
 	return news_record_if_videos_enabled( $control ) && ( 'category' === $type );
 }
 
+/** Tri-Column section */
+function news_record_if_tri_col_enabled( $control ) {
+	return $control->manager->get_setting( 'news_record_tri_col_section_enable' )->value();
+}
+function news_record_tri_col_1_content_type_category( $control ) {
+	$type = $control->manager->get_setting( 'news_record_tri_col_1_content_type' )->value();
+	return news_record_if_tri_col_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_tri_col_1_content_type_tag( $control ) {
+	$type = $control->manager->get_setting( 'news_record_tri_col_1_content_type' )->value();
+	return news_record_if_tri_col_enabled( $control ) && ( 'tag' === $type );
+}
+function news_record_tri_col_2_content_type_category( $control ) {
+	$type = $control->manager->get_setting( 'news_record_tri_col_2_content_type' )->value();
+	return news_record_if_tri_col_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_tri_col_2_content_type_tag( $control ) {
+	$type = $control->manager->get_setting( 'news_record_tri_col_2_content_type' )->value();
+	return news_record_if_tri_col_enabled( $control ) && ( 'tag' === $type );
+}
+function news_record_tri_col_3_content_type_category( $control ) {
+	$type = $control->manager->get_setting( 'news_record_tri_col_3_content_type' )->value();
+	return news_record_if_tri_col_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_tri_col_3_content_type_tag( $control ) {
+	$type = $control->manager->get_setting( 'news_record_tri_col_3_content_type' )->value();
+	return news_record_if_tri_col_enabled( $control ) && ( 'tag' === $type );
+}
+
+/* ============================================================
+   TRI-COLUMN DEFAULT LAYOUT SECTION
+   ============================================================ */
+
+$wp_customize->add_section(
+	'news_record_tri_col_section',
+	array(
+		'title'    => esc_html__( 'Default Layout 3 Column', 'news-record' ),
+		'panel'    => 'news_record_frontpage_panel',
+		'priority' => 190,
+	)
+);
+
+// Enable toggle.
+$wp_customize->add_setting(
+	'news_record_tri_col_section_enable',
+	array(
+		'default'           => false,
+		'sanitize_callback' => 'news_record_sanitize_checkbox',
+	)
+);
+$wp_customize->add_control(
+	new News_Record_Toggle_Checkbox_Custom_control(
+		$wp_customize,
+		'news_record_tri_col_section_enable',
+		array(
+			'label'    => esc_html__( 'Enable 3 Column Section', 'news-record' ),
+			'type'     => 'checkbox',
+			'settings' => 'news_record_tri_col_section_enable',
+			'section'  => 'news_record_tri_col_section',
+		)
+	)
+);
+
+for ( $col = 1; $col <= 3; $col++ ) {
+	
+	// Title
+	$wp_customize->add_setting(
+		'news_record_tri_col_' . $col . '_title',
+		array(
+			'default'           => 'Column ' . $col,
+			'sanitize_callback' => 'sanitize_text_field',
+		)
+	);
+	$wp_customize->add_control(
+		'news_record_tri_col_' . $col . '_title',
+		array(
+			/* translators: %d: column number */
+			'label'           => sprintf( esc_html__( 'Column %d Title', 'news-record' ), $col ),
+			'section'         => 'news_record_tri_col_section',
+			'active_callback' => 'news_record_if_tri_col_enabled',
+		)
+	);
+
+	// Content Type
+	$wp_customize->add_setting(
+		'news_record_tri_col_' . $col . '_content_type',
+		array(
+			'default'           => 'recent',
+			'sanitize_callback' => 'news_record_sanitize_select',
+		)
+	);
+	$wp_customize->add_control(
+		'news_record_tri_col_' . $col . '_content_type',
+		array(
+			'label'           => sprintf( esc_html__( 'Column %d Content Type:', 'news-record' ), $col ),
+			'section'         => 'news_record_tri_col_section',
+			'type'            => 'select',
+			'active_callback' => 'news_record_if_tri_col_enabled',
+			'choices'         => array(
+				'recent'   => esc_html__( 'Recent Posts', 'news-record' ),
+				'category' => esc_html__( 'By Category', 'news-record' ),
+				'tag'      => esc_html__( 'By Tag', 'news-record' ),
+			),
+		)
+	);
+
+	// Category
+	$wp_customize->add_setting(
+		'news_record_tri_col_' . $col . '_category',
+		array(
+			'default'           => '',
+			'sanitize_callback' => 'absint',
+		)
+	);
+	$wp_customize->add_control(
+		'news_record_tri_col_' . $col . '_category',
+		array(
+			'label'           => sprintf( esc_html__( 'Column %d Category', 'news-record' ), $col ),
+			'section'         => 'news_record_tri_col_section',
+			'type'            => 'select',
+			'choices'         => news_record_get_post_cat_choices(),
+			'active_callback' => 'news_record_tri_col_' . $col . '_content_type_category',
+		)
+	);
+
+	// Tag
+	$wp_customize->add_setting(
+		'news_record_tri_col_' . $col . '_tag',
+		array(
+			'default'           => '',
+			'sanitize_callback' => 'sanitize_text_field',
+		)
+	);
+	$wp_customize->add_control(
+		'news_record_tri_col_' . $col . '_tag',
+		array(
+			'label'           => sprintf( esc_html__( 'Column %d Tag', 'news-record' ), $col ),
+			'section'         => 'news_record_tri_col_section',
+			'type'            => 'select',
+			'choices'         => news_record_get_tag_choices(),
+			'active_callback' => 'news_record_tri_col_' . $col . '_content_type_tag',
+		)
+	);
+
+	// Number of posts
+	$wp_customize->add_setting(
+		'news_record_tri_col_' . $col . '_post_count',
+		array(
+			'default'           => 4,
+			'sanitize_callback' => 'absint',
+		)
+	);
+	$wp_customize->add_control(
+		'news_record_tri_col_' . $col . '_post_count',
+		array(
+			'label'           => sprintf( esc_html__( 'Column %d Posts Count', 'news-record' ), $col ),
+			'section'         => 'news_record_tri_col_section',
+			'type'            => 'number',
+			'input_attrs'     => array(
+				'min'  => 1,
+				'max'  => 10,
+				'step' => 1,
+			),
+			'active_callback' => 'news_record_if_tri_col_enabled',
+		)
+	);
+}
+
 /* ============================================================
    6. TRAVEL SECTION
    ============================================================ */
@@ -958,137 +1126,6 @@ $wp_customize->add_control(
 			'step' => 1,
 		),
 		'active_callback' => 'news_record_if_travel_enabled',
-	)
-);
-
-/* ============================================================
-   7. WORLD NEWS SECTION
-   ============================================================ */
-
-$wp_customize->add_section(
-	'news_record_world_news_section',
-	array(
-		'title'    => esc_html__( 'World News Section', 'news-record' ),
-		'panel'    => 'news_record_frontpage_panel',
-		'priority' => 210,
-	)
-);
-
-$wp_customize->add_setting(
-	'news_record_world_news_section_enable',
-	array(
-		'default'           => false,
-		'sanitize_callback' => 'news_record_sanitize_checkbox',
-	)
-);
-$wp_customize->add_control(
-	new News_Record_Toggle_Checkbox_Custom_control(
-		$wp_customize,
-		'news_record_world_news_section_enable',
-		array(
-			'label'    => esc_html__( 'Enable World News Section', 'news-record' ),
-			'type'     => 'checkbox',
-			'settings' => 'news_record_world_news_section_enable',
-			'section'  => 'news_record_world_news_section',
-		)
-	)
-);
-
-$wp_customize->add_setting(
-	'news_record_world_news_title',
-	array(
-		'default'           => __( 'World News', 'news-record' ),
-		'sanitize_callback' => 'sanitize_text_field',
-	)
-);
-$wp_customize->add_control(
-	'news_record_world_news_title',
-	array(
-		'label'           => esc_html__( 'Section Title', 'news-record' ),
-		'section'         => 'news_record_world_news_section',
-		'active_callback' => 'news_record_if_world_news_enabled',
-	)
-);
-
-// Content Source.
-$wp_customize->add_setting(
-	'news_record_world_news_content_type',
-	array(
-		'default'           => 'category',
-		'sanitize_callback' => 'news_record_sanitize_select',
-	)
-);
-$wp_customize->add_control(
-	'news_record_world_news_content_type',
-	array(
-		'label'           => esc_html__( 'Content Source', 'news-record' ),
-		'section'         => 'news_record_world_news_section',
-		'type'            => 'select',
-		'choices'         => array(
-			'recent'   => esc_html__( 'Recent', 'news-record' ),
-			'category' => esc_html__( 'Category', 'news-record' ),
-			'tag'      => esc_html__( 'Tag', 'news-record' ),
-		),
-		'active_callback' => 'news_record_if_world_news_enabled',
-	)
-);
-
-$wp_customize->add_setting(
-	'news_record_world_news_category',
-	array(
-		'default'           => 'world-news',
-		'sanitize_callback' => 'sanitize_text_field',
-	)
-);
-$wp_customize->add_control(
-	'news_record_world_news_category',
-	array(
-		'label'           => esc_html__( 'Category Slug', 'news-record' ),
-		'description'     => esc_html__( 'Enter the category slug to display posts from.', 'news-record' ),
-		'section'         => 'news_record_world_news_section',
-		'type'            => 'text',
-		'active_callback' => 'news_record_if_world_news_category_source',
-	)
-);
-
-// Tag select.
-$wp_customize->add_setting(
-	'news_record_world_news_tag',
-	array(
-		'default'           => '',
-		'sanitize_callback' => 'sanitize_text_field',
-	)
-);
-$wp_customize->add_control(
-	'news_record_world_news_tag',
-	array(
-		'label'           => esc_html__( 'Select Tag', 'news-record' ),
-		'section'         => 'news_record_world_news_section',
-		'type'            => 'select',
-		'choices'         => news_record_get_tag_choices(),
-		'active_callback' => 'news_record_if_world_news_tag_source',
-	)
-);
-
-$wp_customize->add_setting(
-	'news_record_world_news_post_count',
-	array(
-		'default'           => 5,
-		'sanitize_callback' => 'absint',
-	)
-);
-$wp_customize->add_control(
-	'news_record_world_news_post_count',
-	array(
-		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
-		'section'         => 'news_record_world_news_section',
-		'type'            => 'number',
-		'input_attrs'     => array(
-			'min'  => 3,
-			'max'  => 12,
-			'step' => 1,
-		),
-		'active_callback' => 'news_record_if_world_news_enabled',
 	)
 );
 
@@ -2548,19 +2585,6 @@ function news_record_if_travel_category_source( $control ) {
 function news_record_if_travel_tag_source( $control ) {
 	$type = $control->manager->get_setting( 'news_record_travel_content_type' )->value();
 	return news_record_if_travel_enabled( $control ) && ( 'tag' === $type );
-}
-
-// World News.
-function news_record_if_world_news_enabled( $control ) {
-	return $control->manager->get_setting( 'news_record_world_news_section_enable' )->value();
-}
-function news_record_if_world_news_category_source( $control ) {
-	$type = $control->manager->get_setting( 'news_record_world_news_content_type' )->value();
-	return news_record_if_world_news_enabled( $control ) && ( 'category' === $type );
-}
-function news_record_if_world_news_tag_source( $control ) {
-	$type = $control->manager->get_setting( 'news_record_world_news_content_type' )->value();
-	return news_record_if_world_news_enabled( $control ) && ( 'tag' === $type );
 }
 
 // Politics.
