@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * $columns       - Number of columns (for mixed grids)
  * $show_meta     - Whether to show meta (boolean)
  * $show_excerpt  - Whether to show excerpt (boolean)
- * $sidebar_mode  - right, left, or none
+ * $sidebar_mode  - right, left, list, or none
  */
 
 // Safe Defaults
@@ -34,9 +34,14 @@ $show_excerpt  = isset( $show_excerpt ) ? $show_excerpt : true;
 $sidebar_mode  = isset( $sidebar_mode ) ? $sidebar_mode : 'none';
 
 // Validate layout
-$allowed_layouts = array( 'tile-list', 'two-col', 'one-plus-3', 'vertical', 'spotlight', 'mixed-grid' );
+$allowed_layouts    = array( 'tile-list', 'two-col', 'one-plus-3', 'vertical', 'spotlight', 'mixed-grid' );
+$allowed_sidebars = array( 'right', 'left', 'list', 'none' );
 if ( ! in_array( $layout, $allowed_layouts, true ) ) {
 	$layout = 'tile-list';
+}
+
+if ( ! in_array( $sidebar_mode, $allowed_sidebars, true ) ) {
+	$sidebar_mode = 'none';
 }
 
 // Build Query
@@ -64,7 +69,7 @@ if ( ! $query->have_posts() ) {
 $container_class = 'category-section-content layout-' . esc_attr( $layout );
 $wrap_class      = '';
 
-if ( 'right' === $sidebar_mode ) {
+if ( 'right' === $sidebar_mode || 'list' === $sidebar_mode ) {
 	$wrap_class = 'widget-element-wrap secondary-sidebar-right';
 } elseif ( 'left' === $sidebar_mode ) {
 	$wrap_class = 'widget-element-wrap primary-sidebar-left';
@@ -104,9 +109,10 @@ if ( 'right' === $sidebar_mode ) {
 							<a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 0 === $index ? 'large' : 'medium' ); ?></a>
 						</div>
 						<div class="single-card-detail">
+							<?php news_record_categories_list(); ?>
 							<?php if ( $show_meta ) : ?>
 								<div class="card-meta">
-									<?php news_record_categories_list(); news_record_posted_by(); news_record_posted_on(); ?>
+									<?php news_record_posted_by(); news_record_posted_on(); ?>
 								</div>
 							<?php endif; ?>
 							<h3 class="card-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
@@ -117,6 +123,30 @@ if ( 'right' === $sidebar_mode ) {
 					</div>
 				<?php
 				endforeach; wp_reset_postdata();
+
+			// Layout: Vertical List
+			elseif ( 'vertical' === $layout ) :
+				foreach ( $posts as $post ) : setup_postdata( $post );
+					?>
+					<div class="single-card-container list-card">
+						<div class="single-card-image">
+							<a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'medium' ); ?></a>
+						</div>
+						<div class="single-card-detail">
+							<?php news_record_categories_list(); ?>
+							<?php if ( $show_meta ) : ?>
+								<div class="card-meta">
+									<?php news_record_posted_by(); news_record_posted_on(); ?>
+								</div>
+							<?php endif; ?>
+							<h3 class="card-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+							<?php if ( $show_excerpt ) : ?>
+								<div class="card-excerpt"><?php the_excerpt(); ?></div>
+							<?php endif; ?>
+						</div>
+					</div>
+				<?php
+			endforeach; wp_reset_postdata();
 
 			// Layout: Two Column Split
 			elseif ( 'two-col' === $layout ) :
@@ -132,9 +162,10 @@ if ( 'right' === $sidebar_mode ) {
 										<a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'medium' ); ?></a>
 									</div>
 									<div class="single-card-detail">
+										<?php news_record_categories_list(); ?>
 										<?php if ( $show_meta ) : ?>
 											<div class="card-meta">
-												<?php news_record_categories_list(); news_record_posted_on(); ?>
+												<?php news_record_posted_on(); ?>
 											</div>
 										<?php endif; ?>
 										<h3 class="card-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
@@ -151,60 +182,103 @@ if ( 'right' === $sidebar_mode ) {
 				$large_post = array_shift( $posts );
 				?>
 				<div class="one-plus-three-wrapper">
-					<div class="one-plus-three-large">
-						<?php setup_postdata( $large_post ); ?>
+				<div class="one-plus-three-large">
+					<?php setup_postdata( $large_post ); ?>
+					<div class="single-card-container tile-card">
+						<div class="single-card-image"><a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'large' ); ?></a></div>
+						<div class="single-card-detail">
+							<?php news_record_categories_list(); ?>
+							<?php if ( $show_meta ) : ?><div class="card-meta"><?php news_record_posted_on(); ?></div><?php endif; ?>
+							<h3 class="card-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+						</div>
+					</div>
+					<?php wp_reset_postdata(); ?>
+				</div>
+				<div class="one-plus-three-small">
+					<?php foreach ( array_slice( $posts, 0, 3 ) as $post ) : setup_postdata( $post ); ?>
+						<div class="single-card-container grid-card">
+							<div class="single-card-image"><a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'medium_large' ); ?></a></div>
+							<div class="single-card-detail">
+								<?php news_record_categories_list(); ?>
+								<?php if ( $show_meta ) : ?><div class="card-meta"><?php news_record_posted_on(); ?></div><?php endif; ?>
+								<h4 class="card-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
+							</div>
+						</div>
+					<?php endforeach; wp_reset_postdata(); ?>
+				</div>
+			</div>
+			<?php
+
+			// Layout: Spotlight (1 large featured post + remaining in sidebar list)
+			elseif ( 'spotlight' === $layout ) :
+				$spotlight_post = array_shift( $posts );
+				$spotlight_posts = $posts;
+
+				if ( 'none' === $sidebar_mode ) :
+					// No sidebar: spotlight card only.
+					setup_postdata( $spotlight_post );
+					?>
+					<div class="single-card-container tile-card">
+						<div class="single-card-image"><a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'large' ); ?></a></div>
+						<div class="single-card-detail">
+							<?php news_record_categories_list(); ?>
+							<?php if ( $show_meta ) : ?><div class="card-meta"><?php news_record_posted_on(); ?></div><?php endif; ?>
+							<h3 class="card-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+							<?php if ( $show_excerpt ) : ?><div class="card-excerpt"><?php the_excerpt(); ?></div><?php endif; ?>
+						</div>
+					</div>
+					<?php wp_reset_postdata();
+
+				else :
+					// With sidebar: spotlight card in main area, posts list in sidebar.
+					?>
+					<div class="spotlight-main-card">
+						<?php setup_postdata( $spotlight_post ); ?>
 						<div class="single-card-container tile-card">
 							<div class="single-card-image"><a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'large' ); ?></a></div>
 							<div class="single-card-detail">
-								<?php if ( $show_meta ) : ?><div class="card-meta"><?php news_record_categories_list(); news_record_posted_on(); ?></div><?php endif; ?>
+								<?php news_record_categories_list(); ?>
+								<?php if ( $show_meta ) : ?><div class="card-meta"><?php news_record_posted_on(); ?></div><?php endif; ?>
 								<h3 class="card-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+								<?php if ( $show_excerpt ) : ?><div class="card-excerpt"><?php the_excerpt(); ?></div><?php endif; ?>
 							</div>
 						</div>
 						<?php wp_reset_postdata(); ?>
 					</div>
-					<div class="one-plus-three-small">
-						<?php foreach ( array_slice( $posts, 0, 3 ) as $post ) : setup_postdata( $post ); ?>
-							<div class="single-card-container grid-card">
-								<div class="single-card-image"><a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'medium_large' ); ?></a></div>
-								<div class="single-card-detail">
-									<?php if ( $show_meta ) : ?><div class="card-meta"><?php news_record_posted_on(); ?></div><?php endif; ?>
-									<h4 class="card-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
-								</div>
-							</div>
-						<?php endforeach; wp_reset_postdata(); ?>
-					</div>
-				</div>
 				<?php
+				endif;
 
-			// Layout: Mixed Grid (1 Large tile followed by flex grid) 
+			// Layout: Mixed Grid (1 Large tile followed by flex grid)
 			elseif ( 'mixed-grid' === $layout ) :
 				$first_post = array_shift( $posts );
 				$grid_cols  = max( 1, $columns - 1 );
 				?>
-				<div class="mixed-grid-wrapper">
-					<div class="mixed-grid-large">
-						<?php setup_postdata( $first_post ); ?>
-						<div class="single-card-container tile-card">
-							<div class="single-card-image"><a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'large' ); ?></a></div>
+			<div class="mixed-grid-wrapper">
+				<div class="mixed-grid-large">
+					<?php setup_postdata( $first_post ); ?>
+					<div class="single-card-container tile-card">
+						<div class="single-card-image"><a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'large' ); ?></a></div>
+						<div class="single-card-detail">
+							<?php news_record_categories_list(); ?>
+							<?php if ( $show_meta ) : ?><div class="card-meta"><?php news_record_posted_on(); ?></div><?php endif; ?>
+							<h3 class="card-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+						</div>
+					</div>
+					<?php wp_reset_postdata(); ?>
+				</div>
+				<div class="mixed-grid-items mixed-grid-col-<?php echo esc_attr( $grid_cols ); ?>">
+					<?php foreach ( $posts as $post ) : setup_postdata( $post ); ?>
+						<div class="single-card-container grid-card">
+							<div class="single-card-image"><a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'medium' ); ?></a></div>
 							<div class="single-card-detail">
-								<?php if ( $show_meta ) : ?><div class="card-meta"><?php news_record_categories_list(); news_record_posted_on(); ?></div><?php endif; ?>
-								<h3 class="card-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+								<?php news_record_categories_list(); ?>
+								<?php if ( $show_meta ) : ?><div class="card-meta"><?php news_record_posted_on(); ?></div><?php endif; ?>
+								<h4 class="card-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
 							</div>
 						</div>
-						<?php wp_reset_postdata(); ?>
-					</div>
-					<div class="mixed-grid-items mixed-grid-col-<?php echo esc_attr( $grid_cols ); ?>">
-						<?php foreach ( $posts as $post ) : setup_postdata( $post ); ?>
-							<div class="single-card-container grid-card">
-								<div class="single-card-image"><a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'medium' ); ?></a></div>
-								<div class="single-card-detail">
-									<?php if ( $show_meta ) : ?><div class="card-meta"><?php news_record_posted_on(); ?></div><?php endif; ?>
-									<h4 class="card-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
-								</div>
-							</div>
-						<?php endforeach; wp_reset_postdata(); ?>
-					</div>
+					<?php endforeach; wp_reset_postdata(); ?>
 				</div>
+			</div>
 				<?php
 			endif;
 			?>
@@ -213,7 +287,23 @@ if ( 'right' === $sidebar_mode ) {
 		<?php if ( 'none' !== $sidebar_mode ) : ?>
 				</div><!-- .primary-widget-section -->
 				<div class="secondary-widget-section">
-					<?php dynamic_sidebar( ( 'left' === $sidebar_mode ) ? 'primary-widgets-area' : 'secondary-widgets-area' ); ?>
+					<?php if ( 'spotlight' === $layout && ! empty( $spotlight_posts ) ) : ?>
+						<?php foreach ( $spotlight_posts as $post ) : setup_postdata( $post ); ?>
+							<div class="single-card-container list-card">
+								<div class="single-card-image">
+									<a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'medium' ); ?></a>
+								</div>
+								<div class="single-card-detail">
+									<?php if ( $show_meta ) : ?>
+										<div class="card-meta"><?php news_record_posted_on(); ?></div>
+									<?php endif; ?>
+									<h4 class="card-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
+								</div>
+							</div>
+						<?php endforeach; wp_reset_postdata(); ?>
+					<?php else : ?>
+						<?php dynamic_sidebar( ( 'left' === $sidebar_mode ) ? 'primary-widgets-area' : 'secondary-widgets-area' ); ?>
+					<?php endif; ?>
 				</div>
 			</div><!-- .widget-element-wrap -->
 		<?php endif; ?>
@@ -242,4 +332,29 @@ if ( 'right' === $sidebar_mode ) {
     .layout-mixed-grid .mixed-grid-wrapper { flex-direction: column; }
     .one-plus-three-large, .mixed-grid-large { flex: 100%; }
 }
+
+/* Vertical Layout */
+.layout-vertical { display: flex; flex-direction: column; gap: 20px; }
+
+/* Spotlight Layout — main area shows one card */
+.layout-spotlight .spotlight-main-card { width: 100%; }
+
+/* Sidebar support within category sections */
+.category-section .widget-element-wrap { display: flex; margin-inline: -1rem; align-items: flex-start; }
+.category-section .widget-element-wrap .primary-widget-section { width: 100%; padding-inline: 1rem; }
+.category-section .widget-element-wrap .secondary-widget-section { width: 100%; padding-inline: 1rem; }
+.category-section .widget-element-wrap.secondary-sidebar-left { flex-direction: row-reverse; }
+
+@media (min-width: 992px) {
+    .category-section .widget-element-wrap .primary-widget-section { width: 70%; }
+    .category-section .widget-element-wrap .secondary-widget-section { width: 30%; position: sticky; top: 40px; }
+}
+@media (max-width: 991px) {
+    .category-section .widget-element-wrap { flex-direction: column; }
+    .category-section .widget-element-wrap.secondary-sidebar-left { flex-direction: column; }
+}
+
+/* Card excerpt */
+.single-card-container .single-card-detail .card-excerpt { margin-top: 8px; font-size: var(--typo-xs, 0.85rem); color: #666; line-height: 1.6; }
+.single-card-container.tile-card .single-card-detail .card-excerpt { color: rgba(255,255,255,0.85); }
 </style>

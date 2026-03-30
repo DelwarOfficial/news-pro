@@ -710,3 +710,77 @@ function news_record_videos_content_type_category( $control ) {
 	$type = $control->manager->get_setting( 'news_record_videos_content_type' )->value();
 	return news_record_if_videos_enabled( $control ) && ( 'category' === $type );
 }
+
+/* ============================================================
+   6. TRAVEL SECTION
+   ============================================================ */
+
+$wp_customize->add_section(
+	'news_record_travel_section',
+	array(
+		'title' => esc_html__( 'Travel Section', 'news-record' ),
+		'panel' => 'news_record_frontpage_panel',
+	)
+);
+
+// Enable toggle.
+$wp_customize->add_setting(
+	'news_record_travel_section_enable',
+	array(
+		'default'           => true,
+		'sanitize_callback' => 'news_record_sanitize_checkbox',
+	)
+);
+$wp_customize->add_control(
+	new News_Record_Toggle_Checkbox_Custom_control(
+		$wp_customize,
+		'news_record_travel_section_enable',
+		array(
+			'label'    => esc_html__( 'Enable Travel Section', 'news-record' ),
+			'type'     => 'checkbox',
+			'settings' => 'news_record_travel_section_enable',
+			'section'  => 'news_record_travel_section',
+		)
+	)
+);
+
+// Section title.
+$wp_customize->add_setting(
+	'news_record_travel_title',
+	array(
+		'default'           => __( 'Travel', 'news-record' ),
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_travel_title',
+	array(
+		'label'           => esc_html__( 'Section Title', 'news-record' ),
+		'section'         => 'news_record_travel_section',
+		'active_callback' => 'news_record_if_travel_enabled',
+	)
+);
+
+// Category picker.
+$wp_customize->add_setting(
+	'news_record_travel_category',
+	array(
+		'default'           => 'travel',
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_travel_category',
+	array(
+		'label'           => esc_html__( 'Category Slug', 'news-record' ),
+		'description'     => esc_html__( 'Enter the category slug to display posts from.', 'news-record' ),
+		'section'         => 'news_record_travel_section',
+		'type'            => 'text',
+		'active_callback' => 'news_record_if_travel_enabled',
+	)
+);
+
+// Active callbacks.
+function news_record_if_travel_enabled( $control ) {
+	return $control->manager->get_setting( 'news_record_travel_section_enable' )->value();
+}

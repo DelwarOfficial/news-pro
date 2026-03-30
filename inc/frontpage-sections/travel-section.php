@@ -3,14 +3,22 @@
  * Travel Category Section
  *
  * Displays posts from the Travel category using the reusable category-section engine.
+ * Configurable via Theme Customizer > Frontpage Sections > Travel Section.
  *
  * @package News Record
  */
 
-$section_title = __( 'Travel', 'news-record' );
-$category      = 'travel'; // Category slug
-$layout        = 'mixed-grid'; // Layout mode: mixed grid with varied sizes
-$post_count    = 6; // 6 posts in mixed grid
+// Check if the section is enabled via Customizer.
+$travel_section_enable = get_theme_mod( 'news_record_travel_section_enable', true );
+
+if ( false === $travel_section_enable ) {
+	return;
+}
+
+$section_title = get_theme_mod( 'news_record_travel_title', __( 'Travel', 'news-record' ) );
+$category      = get_theme_mod( 'news_record_travel_category', 'travel' );
+$layout        = 'mixed-grid';
+$post_count    = 6;
 $columns       = 3;
 $show_meta     = true;
 $show_excerpt  = false;
