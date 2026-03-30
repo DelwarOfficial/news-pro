@@ -9,9 +9,9 @@
  */
 
 // Check if the section is enabled via Customizer.
-$travel_section_enable = get_theme_mod( 'news_record_travel_section_enable', true );
+$travel_section_enable = get_theme_mod( 'news_record_travel_section_enable', false );
 
-if ( false === $travel_section_enable ) {
+if ( ! $travel_section_enable ) {
 	return;
 }
 

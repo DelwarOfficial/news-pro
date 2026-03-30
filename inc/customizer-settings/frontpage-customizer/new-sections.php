@@ -718,8 +718,9 @@ function news_record_videos_content_type_category( $control ) {
 $wp_customize->add_section(
 	'news_record_travel_section',
 	array(
-		'title' => esc_html__( 'Travel Section', 'news-record' ),
-		'panel' => 'news_record_frontpage_panel',
+		'title'    => esc_html__( 'Travel Section', 'news-record' ),
+		'panel'    => 'news_record_frontpage_panel',
+		'priority' => 200,
 	)
 );
 
@@ -727,7 +728,7 @@ $wp_customize->add_section(
 $wp_customize->add_setting(
 	'news_record_travel_section_enable',
 	array(
-		'default'           => true,
+		'default'           => false,
 		'sanitize_callback' => 'news_record_sanitize_checkbox',
 	)
 );

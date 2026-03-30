@@ -21,6 +21,13 @@ class News_Record_Toggle_Checkbox_Custom_control extends WP_Customize_Control {
 	public $type = 'toggle_switch';
 
 	/**
+	 * Constructor.
+	 */
+	public function __construct( $manager, $id, $args = array() ) {
+		parent::__construct( $manager, $id, $args );
+	}
+
+	/**
 	 * Render the control in the customizer
 	 */
 	public function render_content(){
