@@ -15,6 +15,7 @@ if ( false === $videos_section ) {
 
 $section_title = get_theme_mod( 'news_record_videos_title', __( 'Videos', 'news-record' ) );
 $content_type  = get_theme_mod( 'news_record_videos_content_type', 'recent' );
+$post_count    = get_theme_mod( 'news_record_videos_post_count', 6 );
 $content_ids   = array();
 
 if ( 'post' === $content_type ) {
@@ -27,7 +28,7 @@ if ( 'post' === $content_type ) {
 
 	$args = array(
 		'post_type'           => 'post',
-		'posts_per_page'      => 6,
+		'posts_per_page'      => absint( $post_count ),
 		'ignore_sticky_posts' => true,
 	);
 
@@ -41,12 +42,12 @@ if ( 'post' === $content_type ) {
 	$cat_id = get_theme_mod( 'news_record_videos_category' );
 	$args   = array(
 		'cat'            => absint( $cat_id ),
-		'posts_per_page' => 6,
+		'posts_per_page' => absint( $post_count ),
 	);
 } else {
 	$args = array(
 		'post_type'           => 'post',
-		'posts_per_page'      => 6,
+		'posts_per_page'      => absint( $post_count ),
 		'ignore_sticky_posts' => true,
 		'orderby'             => 'date',
 	);

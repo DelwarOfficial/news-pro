@@ -79,15 +79,55 @@ $wp_customize->add_setting(
 $wp_customize->add_control(
 	'news_record_recent_articles_content_type',
 	array(
-		'label'           => esc_html__( 'Content type:', 'news-record' ),
+		'label'           => esc_html__( 'Content Source', 'news-record' ),
 		'description'     => esc_html__( 'Choose where you want to render the content from.', 'news-record' ),
 		'section'         => 'news_record_recent_articles_section',
 		'type'            => 'select',
 		'active_callback' => 'news_record_if_recent_articles_enabled',
 		'choices'         => array(
-			'post'   => esc_html__( 'Post', 'news-record' ),
-			'recent' => esc_html__( 'Recent', 'news-record' ),
+			'post'     => esc_html__( 'Specific Posts', 'news-record' ),
+			'recent'   => esc_html__( 'Recent', 'news-record' ),
+			'category' => esc_html__( 'Category', 'news-record' ),
+			'tag'      => esc_html__( 'Tag', 'news-record' ),
 		),
+	)
+);
+
+// Category select.
+$wp_customize->add_setting(
+	'news_record_recent_articles_category',
+	array(
+		'default'           => '',
+		'sanitize_callback' => 'news_record_sanitize_select',
+	)
+);
+$wp_customize->add_control(
+	'news_record_recent_articles_category',
+	array(
+		'label'           => esc_html__( 'Select Category', 'news-record' ),
+		'section'         => 'news_record_recent_articles_section',
+		'type'            => 'select',
+		'choices'         => news_record_get_post_cat_choices(),
+		'active_callback' => 'news_record_recent_articles_section_content_type_category_enabled',
+	)
+);
+
+// Tag select.
+$wp_customize->add_setting(
+	'news_record_recent_articles_tag',
+	array(
+		'default'           => '',
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_recent_articles_tag',
+	array(
+		'label'           => esc_html__( 'Select Tag', 'news-record' ),
+		'section'         => 'news_record_recent_articles_section',
+		'type'            => 'select',
+		'choices'         => news_record_get_tag_choices(),
+		'active_callback' => 'news_record_recent_articles_section_content_type_tag_enabled',
 	)
 );
 
@@ -121,6 +161,14 @@ function news_record_if_recent_articles_enabled( $control ) {
 function news_record_recent_articles_section_content_type_post_enabled( $control ) {
 	$content_type = $control->manager->get_setting( 'news_record_recent_articles_content_type' )->value();
 	return news_record_if_recent_articles_enabled( $control ) && ( 'post' === $content_type );
+}
+function news_record_recent_articles_section_content_type_category_enabled( $control ) {
+	$content_type = $control->manager->get_setting( 'news_record_recent_articles_content_type' )->value();
+	return news_record_if_recent_articles_enabled( $control ) && ( 'category' === $content_type );
+}
+function news_record_recent_articles_section_content_type_tag_enabled( $control ) {
+	$content_type = $control->manager->get_setting( 'news_record_recent_articles_content_type' )->value();
+	return news_record_if_recent_articles_enabled( $control ) && ( 'tag' === $content_type );
 }
 
 /*========================Partial Refresh==============================*/

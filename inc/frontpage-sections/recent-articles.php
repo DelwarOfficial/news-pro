@@ -65,6 +65,12 @@ if ( $recent_articles_content_type === 'post' ) {
 	if ( ! empty( $recent_articles_tag ) ) {
 		$args['tag'] = sanitize_text_field( $recent_articles_tag );
 	}
+} else {
+	$args = array(
+		'post_type'           => 'post',
+		'posts_per_page'      => absint( 5 ),
+		'ignore_sticky_posts' => true,
+	);
 }
 
 $query = new WP_Query( $args );

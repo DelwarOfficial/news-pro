@@ -16,6 +16,7 @@ if ( false === $featured_posts_section ) {
 
 $section_title = get_theme_mod( 'news_record_featured_posts_title', __( 'Featured Posts', 'news-record' ) );
 $content_type  = get_theme_mod( 'news_record_featured_posts_content_type', 'recent' );
+$post_count    = get_theme_mod( 'news_record_featured_posts_post_count', 4 );
 $content_ids   = array();
 
 if ( 'post' === $content_type ) {
@@ -29,7 +30,7 @@ if ( 'post' === $content_type ) {
 
 	$args = array(
 		'post_type'           => 'post',
-		'posts_per_page'      => 4,
+		'posts_per_page'      => absint( $post_count ),
 		'ignore_sticky_posts' => true,
 	);
 
@@ -43,13 +44,13 @@ if ( 'post' === $content_type ) {
 	$cat_id = get_theme_mod( 'news_record_featured_posts_category' );
 	$args   = array(
 		'cat'            => absint( $cat_id ),
-		'posts_per_page' => 4,
+		'posts_per_page' => absint( $post_count ),
 	);
 } else {
 	// Default: recent posts.
 	$args = array(
 		'post_type'           => 'post',
-		'posts_per_page'      => 4,
+		'posts_per_page'      => absint( $post_count ),
 		'ignore_sticky_posts' => true,
 		'orderby'             => 'date',
 	);
@@ -138,7 +139,7 @@ if ( empty( $posts ) ) {
 			<!-- Right: 3 smaller overlay cards (posts 2, 3, 4) -->
 			<div class="fp-small-cards">
 				<?php
-				$small_posts = array_slice( $posts, 1, 3 );
+$small_posts = array_slice( $posts, 1, max( 0, absint( $post_count ) - 1 ) );
 				foreach ( $small_posts as $small_post ) :
 					setup_postdata( $small_post );
 					$cats  = get_the_category( $small_post->ID );

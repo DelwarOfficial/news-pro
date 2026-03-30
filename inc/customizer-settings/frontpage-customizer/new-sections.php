@@ -762,6 +762,121 @@ $wp_customize->add_control(
 	)
 );
 
+// Number of posts.
+$wp_customize->add_setting(
+	'news_record_videos_post_count',
+	array(
+		'default'           => 6,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_videos_post_count',
+	array(
+		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
+		'section'         => 'news_record_videos_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 3,
+			'max'  => 6,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_videos_enabled',
+	)
+);
+
+// Number of posts.
+$wp_customize->add_setting(
+	'news_record_posts_carousel_post_count',
+	array(
+		'default'           => 9,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_posts_carousel_post_count',
+	array(
+		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
+		'section'         => 'news_record_posts_carousel_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 3,
+			'max'  => 9,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_posts_carousel_enabled',
+	)
+);
+
+// Number of posts.
+$wp_customize->add_setting(
+	'news_record_featured_posts_post_count',
+	array(
+		'default'           => 4,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_featured_posts_post_count',
+	array(
+		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
+		'section'         => 'news_record_featured_posts_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 1,
+			'max'  => 4,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_featured_posts_enabled',
+	)
+);
+
+// Number of posts.
+$wp_customize->add_setting(
+	'news_record_editor_choice_post_count',
+	array(
+		'default'           => 6,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_editor_choice_post_count',
+	array(
+		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
+		'section'         => 'news_record_editor_choice_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 3,
+			'max'  => 6,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_editor_choice_enabled',
+	)
+);
+
+// Number of posts.
+$wp_customize->add_setting(
+	'news_record_headlines_post_count',
+	array(
+		'default'           => 6,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_headlines_post_count',
+	array(
+		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
+		'section'         => 'news_record_headlines_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 3,
+			'max'  => 6,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_headlines_enabled',
+	)
+);
+
 // Content Source.
 $wp_customize->add_setting(
 	'news_record_travel_content_type',
@@ -2336,6 +2451,29 @@ $wp_customize->add_control(
 	)
 );
 
+// Content Source.
+$wp_customize->add_setting(
+	'news_record_business_content_type',
+	array(
+		'default'           => 'category',
+		'sanitize_callback' => 'news_record_sanitize_select',
+	)
+);
+$wp_customize->add_control(
+	'news_record_business_content_type',
+	array(
+		'label'           => esc_html__( 'Content Source', 'news-record' ),
+		'section'         => 'news_record_business_section',
+		'type'            => 'select',
+		'choices'         => array(
+			'recent'   => esc_html__( 'Recent', 'news-record' ),
+			'category' => esc_html__( 'Category', 'news-record' ),
+			'tag'      => esc_html__( 'Tag', 'news-record' ),
+		),
+		'active_callback' => 'news_record_if_business_enabled',
+	)
+);
+
 $wp_customize->add_setting(
 	'news_record_business_category',
 	array(
@@ -2350,7 +2488,26 @@ $wp_customize->add_control(
 		'description'     => esc_html__( 'Enter the category slug to display posts from.', 'news-record' ),
 		'section'         => 'news_record_business_section',
 		'type'            => 'text',
-		'active_callback' => 'news_record_if_business_enabled',
+		'active_callback' => 'news_record_if_business_category_source',
+	)
+);
+
+// Tag select.
+$wp_customize->add_setting(
+	'news_record_business_tag',
+	array(
+		'default'           => '',
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_business_tag',
+	array(
+		'label'           => esc_html__( 'Select Tag', 'news-record' ),
+		'section'         => 'news_record_business_section',
+		'type'            => 'select',
+		'choices'         => news_record_get_tag_choices(),
+		'active_callback' => 'news_record_if_business_tag_source',
 	)
 );
 
@@ -2384,63 +2541,167 @@ $wp_customize->add_control(
 function news_record_if_travel_enabled( $control ) {
 	return $control->manager->get_setting( 'news_record_travel_section_enable' )->value();
 }
+function news_record_if_travel_category_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_travel_content_type' )->value();
+	return news_record_if_travel_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_if_travel_tag_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_travel_content_type' )->value();
+	return news_record_if_travel_enabled( $control ) && ( 'tag' === $type );
+}
 
 // World News.
 function news_record_if_world_news_enabled( $control ) {
 	return $control->manager->get_setting( 'news_record_world_news_section_enable' )->value();
+}
+function news_record_if_world_news_category_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_world_news_content_type' )->value();
+	return news_record_if_world_news_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_if_world_news_tag_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_world_news_content_type' )->value();
+	return news_record_if_world_news_enabled( $control ) && ( 'tag' === $type );
 }
 
 // Politics.
 function news_record_if_politics_enabled( $control ) {
 	return $control->manager->get_setting( 'news_record_politics_section_enable' )->value();
 }
+function news_record_if_politics_category_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_politics_content_type' )->value();
+	return news_record_if_politics_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_if_politics_tag_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_politics_content_type' )->value();
+	return news_record_if_politics_enabled( $control ) && ( 'tag' === $type );
+}
 
 // Lifestyle.
 function news_record_if_lifestyle_enabled( $control ) {
 	return $control->manager->get_setting( 'news_record_lifestyle_section_enable' )->value();
+}
+function news_record_if_lifestyle_category_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_lifestyle_content_type' )->value();
+	return news_record_if_lifestyle_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_if_lifestyle_tag_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_lifestyle_content_type' )->value();
+	return news_record_if_lifestyle_enabled( $control ) && ( 'tag' === $type );
 }
 
 // Opinions.
 function news_record_if_opinions_enabled( $control ) {
 	return $control->manager->get_setting( 'news_record_opinions_section_enable' )->value();
 }
+function news_record_if_opinions_category_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_opinions_content_type' )->value();
+	return news_record_if_opinions_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_if_opinions_tag_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_opinions_content_type' )->value();
+	return news_record_if_opinions_enabled( $control ) && ( 'tag' === $type );
+}
 
 // Interviews.
 function news_record_if_interviews_enabled( $control ) {
 	return $control->manager->get_setting( 'news_record_interviews_section_enable' )->value();
+}
+function news_record_if_interviews_category_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_interviews_content_type' )->value();
+	return news_record_if_interviews_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_if_interviews_tag_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_interviews_content_type' )->value();
+	return news_record_if_interviews_enabled( $control ) && ( 'tag' === $type );
 }
 
 // Spotlight.
 function news_record_if_spotlight_enabled( $control ) {
 	return $control->manager->get_setting( 'news_record_spotlight_section_enable' )->value();
 }
+function news_record_if_spotlight_category_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_spotlight_content_type' )->value();
+	return news_record_if_spotlight_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_if_spotlight_tag_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_spotlight_content_type' )->value();
+	return news_record_if_spotlight_enabled( $control ) && ( 'tag' === $type );
+}
 
 // Sports.
 function news_record_if_sports_enabled( $control ) {
 	return $control->manager->get_setting( 'news_record_sports_section_enable' )->value();
+}
+function news_record_if_sports_category_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_sports_content_type' )->value();
+	return news_record_if_sports_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_if_sports_tag_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_sports_content_type' )->value();
+	return news_record_if_sports_enabled( $control ) && ( 'tag' === $type );
 }
 
 // In-Depth.
 function news_record_if_in_depth_enabled( $control ) {
 	return $control->manager->get_setting( 'news_record_in_depth_section_enable' )->value();
 }
+function news_record_if_in_depth_category_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_in_depth_content_type' )->value();
+	return news_record_if_in_depth_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_if_in_depth_tag_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_in_depth_content_type' )->value();
+	return news_record_if_in_depth_enabled( $control ) && ( 'tag' === $type );
+}
 
 // Technology.
 function news_record_if_technology_enabled( $control ) {
 	return $control->manager->get_setting( 'news_record_technology_section_enable' )->value();
+}
+function news_record_if_technology_category_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_technology_content_type' )->value();
+	return news_record_if_technology_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_if_technology_tag_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_technology_content_type' )->value();
+	return news_record_if_technology_enabled( $control ) && ( 'tag' === $type );
 }
 
 // Featured Category.
 function news_record_if_featured_category_enabled( $control ) {
 	return $control->manager->get_setting( 'news_record_featured_category_section_enable' )->value();
 }
+function news_record_if_featured_category_category_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_featured_category_content_type' )->value();
+	return news_record_if_featured_category_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_if_featured_category_tag_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_featured_category_content_type' )->value();
+	return news_record_if_featured_category_enabled( $control ) && ( 'tag' === $type );
+}
 
 // Entertainment.
 function news_record_if_entertainment_enabled( $control ) {
 	return $control->manager->get_setting( 'news_record_entertainment_section_enable' )->value();
 }
+function news_record_if_entertainment_category_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_entertainment_content_type' )->value();
+	return news_record_if_entertainment_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_if_entertainment_tag_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_entertainment_content_type' )->value();
+	return news_record_if_entertainment_enabled( $control ) && ( 'tag' === $type );
+}
 
 // Business.
 function news_record_if_business_enabled( $control ) {
 	return $control->manager->get_setting( 'news_record_business_section_enable' )->value();
+}
+function news_record_if_business_category_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_business_content_type' )->value();
+	return news_record_if_business_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_if_business_tag_source( $control ) {
+	$type = $control->manager->get_setting( 'news_record_business_content_type' )->value();
+	return news_record_if_business_enabled( $control ) && ( 'tag' === $type );
 }

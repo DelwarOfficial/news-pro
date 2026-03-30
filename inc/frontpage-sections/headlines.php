@@ -15,6 +15,7 @@ if ( false === $headlines_section ) {
 
 $section_title = get_theme_mod( 'news_record_headlines_title', esc_html__( 'Headlines', 'news-record' ) );
 $content_type  = get_theme_mod( 'news_record_headlines_content_type', 'recent' );
+$post_count    = get_theme_mod( 'news_record_headlines_post_count', 6 );
 $content_ids   = array();
 
 if ( 'post' === $content_type ) {
@@ -27,7 +28,7 @@ if ( 'post' === $content_type ) {
 
 	$args = array(
 		'post_type'           => 'post',
-		'posts_per_page'      => 6,
+		'posts_per_page'      => absint( $post_count ),
 		'ignore_sticky_posts' => true,
 	);
 
@@ -46,7 +47,7 @@ if ( 'post' === $content_type ) {
 } else {
 	$args = array(
 		'post_type'           => 'post',
-		'posts_per_page'      => 6,
+		'posts_per_page'      => absint( $post_count ),
 		'ignore_sticky_posts' => true,
 		'orderby'             => 'date',
 	);
@@ -57,9 +58,9 @@ if ( ! $query->have_posts() ) {
 	return;
 }
 
-$posts = $query->posts;
+$posts         = $query->posts;
 $featured_post = isset( $posts[0] ) ? $posts[0] : null;
-$grid_posts = array_slice( $posts, 1, 5 );
+$grid_posts    = array_slice( $posts, 1, max( 0, absint( $post_count ) - 1 ) );
 ?>
 
 <section id="news_record_headlines_section" class="headlines-section section-divider">

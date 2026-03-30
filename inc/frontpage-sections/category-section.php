@@ -38,7 +38,7 @@ $show_excerpt  = isset( $show_excerpt ) ? $show_excerpt : true;
 $sidebar_mode  = isset( $sidebar_mode ) ? $sidebar_mode : 'none';
 
 // Validate layout
-$allowed_layouts    = array( 'tile-list', 'two-col', 'one-plus-3', 'vertical', 'spotlight', 'mixed-grid' );
+$allowed_layouts    = array( 'tile-list', 'two-col', 'three-col', 'one-plus-3', 'vertical', 'spotlight', 'mixed-grid' );
 $allowed_sidebars = array( 'right', 'left', 'list', 'none' );
 if ( ! in_array( $layout, $allowed_layouts, true ) ) {
 	$layout = 'tile-list';
@@ -183,13 +183,46 @@ if ( 'right' === $sidebar_mode || 'list' === $sidebar_mode ) {
 				</div>
 				<?php
 
+			// Layout: Three Column Split
+			elseif ( 'three-col' === $layout ) :
+				$third = ceil( count( $posts ) / 3 );
+				$cols = array(
+					array_slice( $posts, 0, $third ),
+					array_slice( $posts, $third, $third ),
+					array_slice( $posts, $third * 2 )
+				);
+				?>
+				<div class="three-columns">
+					<?php foreach ( $cols as $col ) : ?>
+						<div class="column">
+							<?php foreach ( $col as $post ) : setup_postdata( $post ); ?>
+								<div class="single-card-container list-card">
+									<div class="single-card-image">
+										<a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'medium' ); ?></a>
+									</div>
+									<div class="single-card-detail">
+										<?php news_record_categories_list(); ?>
+										<?php if ( $show_meta ) : ?>
+											<div class="card-meta">
+												<?php news_record_posted_on(); ?>
+											</div>
+										<?php endif; ?>
+										<h3 class="card-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+									</div>
+								</div>
+							<?php endforeach; wp_reset_postdata(); ?>
+						</div>
+					<?php endforeach; ?>
+				</div>
+				<?php
+
 			// Layout: One Large + 3 Small Grid
 			elseif ( 'one-plus-3' === $layout ) :
 				$large_post = array_shift( $posts );
 				?>
 				<div class="one-plus-three-wrapper">
 				<div class="one-plus-three-large">
-					<?php setup_postdata( $large_post ); ?>
+					<?php global $post; $post = $large_post; setup_postdata( $post ); ?>
 					<div class="single-card-container tile-card">
 						<div class="single-card-image"><a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'large' ); ?></a></div>
 						<div class="single-card-detail">
@@ -222,7 +255,8 @@ if ( 'right' === $sidebar_mode || 'list' === $sidebar_mode ) {
 
 				if ( 'none' === $sidebar_mode ) :
 					// No sidebar: spotlight card only.
-					setup_postdata( $spotlight_post );
+					global $post; $post = $spotlight_post;
+					setup_postdata( $post );
 					?>
 					<div class="single-card-container tile-card">
 						<div class="single-card-image"><a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'large' ); ?></a></div>
@@ -239,7 +273,7 @@ if ( 'right' === $sidebar_mode || 'list' === $sidebar_mode ) {
 					// With sidebar: spotlight card in main area, posts list in sidebar.
 					?>
 					<div class="spotlight-main-card">
-						<?php setup_postdata( $spotlight_post ); ?>
+						<?php global $post; $post = $spotlight_post; setup_postdata( $post ); ?>
 						<div class="single-card-container tile-card">
 							<div class="single-card-image"><a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'large' ); ?></a></div>
 							<div class="single-card-detail">
@@ -261,7 +295,7 @@ if ( 'right' === $sidebar_mode || 'list' === $sidebar_mode ) {
 				?>
 			<div class="mixed-grid-wrapper">
 				<div class="mixed-grid-large">
-					<?php setup_postdata( $first_post ); ?>
+					<?php global $post; $post = $first_post; setup_postdata( $post ); ?>
 					<div class="single-card-container tile-card">
 						<div class="single-card-image"><a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'large' ); ?></a></div>
 						<div class="single-card-detail">
@@ -322,6 +356,9 @@ if ( 'right' === $sidebar_mode || 'list' === $sidebar_mode ) {
 .layout-two-col .two-columns { display: flex; gap: 30px; }
 .layout-two-col .column { flex: 1; display: flex; flex-direction: column; gap: 20px;}
 
+.layout-three-col .three-columns { display: flex; gap: 30px; }
+.layout-three-col .column { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+
 .layout-one-plus-3 .one-plus-three-wrapper,
 .layout-mixed-grid .mixed-grid-wrapper { display: flex; gap: 30px; }
 
@@ -337,6 +374,14 @@ if ( 'right' === $sidebar_mode || 'list' === $sidebar_mode ) {
     .layout-one-plus-3 .one-plus-three-wrapper,
     .layout-mixed-grid .mixed-grid-wrapper { flex-direction: column; }
     .one-plus-three-large, .mixed-grid-large { flex: 100%; }
+
+    .layout-three-col .three-columns { flex-wrap: wrap; flex-direction: row; }
+    .layout-three-col .three-columns .column { flex: 0 0 calc(50% - 15px); }
+}
+
+@media (max-width: 600px) {
+    .layout-three-col .three-columns { flex-direction: column; }
+    .layout-three-col .three-columns .column { flex: 0 0 100%; }
 }
 
 /* Vertical Layout */
