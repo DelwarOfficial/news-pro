@@ -17,6 +17,8 @@ if ( ! $lifestyle_section_enable ) {
 
 $section_title = get_theme_mod( 'news_record_lifestyle_title', esc_html__( 'Lifestyle', 'news-record' ) );
 $category      = get_theme_mod( 'news_record_lifestyle_category', 'lifestyle' );
+$tag           = get_theme_mod( 'news_record_lifestyle_tag', '' );
+$content_type  = get_theme_mod( 'news_record_lifestyle_content_type', 'category' );
 $post_count    = get_theme_mod( 'news_record_lifestyle_post_count', 6 );
 $layout        = 'two-col';
 $columns       = 2;

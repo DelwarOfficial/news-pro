@@ -61,6 +61,19 @@ function news_record_get_post_choices() {
 }
 
 /**
+ * Get an array of tag slug and name for Customizer selects.
+ */
+function news_record_get_tag_choices() {
+	$choices         = array( '' => esc_html__( '--Select--', 'news-record' ) );
+	$tags             = get_tags( array( 'hide_empty' => false ) );
+	foreach ( $tags as $tag ) {
+		$choices[ $tag->slug ] = $tag->name;
+	}
+
+	return $choices;
+}
+
+/**
  * Get all pages for customizer Page content type.
  */
 function news_record_get_page_choices() {

@@ -17,6 +17,8 @@ if ( ! $politics_section_enable ) {
 
 $section_title = get_theme_mod( 'news_record_politics_title', esc_html__( 'Politics', 'news-record' ) );
 $category      = get_theme_mod( 'news_record_politics_category', 'politics' );
+$tag           = get_theme_mod( 'news_record_politics_tag', '' );
+$content_type  = get_theme_mod( 'news_record_politics_content_type', 'category' );
 $post_count    = get_theme_mod( 'news_record_politics_post_count', 6 );
 $layout        = 'two-col';
 $columns       = 2;

@@ -17,6 +17,8 @@ if ( ! $in_depth_section_enable ) {
 
 $section_title = get_theme_mod( 'news_record_in_depth_title', esc_html__( 'In-Depth', 'news-record' ) );
 $category      = get_theme_mod( 'news_record_in_depth_category', 'in-depth' );
+$tag           = get_theme_mod( 'news_record_in_depth_tag', '' );
+$content_type  = get_theme_mod( 'news_record_in_depth_content_type', 'category' );
 $post_count    = get_theme_mod( 'news_record_in_depth_post_count', 7 );
 $layout        = 'mixed-grid';
 $columns       = 3;

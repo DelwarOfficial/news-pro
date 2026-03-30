@@ -17,6 +17,8 @@ if ( ! $opinions_section_enable ) {
 
 $section_title = get_theme_mod( 'news_record_opinions_title', esc_html__( 'Opinions', 'news-record' ) );
 $category      = get_theme_mod( 'news_record_opinions_category', 'opinions' );
+$tag           = get_theme_mod( 'news_record_opinions_tag', '' );
+$content_type  = get_theme_mod( 'news_record_opinions_content_type', 'category' );
 $post_count    = get_theme_mod( 'news_record_opinions_post_count', 4 );
 $layout        = 'one-plus-3';
 $columns       = 1;

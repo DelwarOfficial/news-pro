@@ -17,6 +17,8 @@ if ( ! $business_section_enable ) {
 
 $section_title = get_theme_mod( 'news_record_business_title', esc_html__( 'Business', 'news-record' ) );
 $category      = get_theme_mod( 'news_record_business_category', 'business' );
+$tag           = get_theme_mod( 'news_record_business_tag', '' );
+$content_type  = get_theme_mod( 'news_record_business_content_type', 'category' );
 $post_count    = get_theme_mod( 'news_record_business_post_count', 4 );
 $layout        = 'vertical';
 $columns       = 1;

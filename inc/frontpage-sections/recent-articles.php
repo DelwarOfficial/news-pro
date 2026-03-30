@@ -14,6 +14,8 @@ if ( false === $recent_articles_section ) {
 
 $content_ids                  = array();
 $recent_articles_content_type = get_theme_mod( 'news_record_recent_articles_content_type', 'recent' );
+$recent_articles_category     = get_theme_mod( 'news_record_recent_articles_category', '' );
+$recent_articles_tag          = get_theme_mod( 'news_record_recent_articles_tag', '' );
 
 if ( $recent_articles_content_type === 'post' ) {
 
@@ -41,6 +43,28 @@ if ( $recent_articles_content_type === 'post' ) {
 		'posts_per_page'      => absint( 5 ),
 		'ignore_sticky_posts' => true,
 	);
+} elseif ( 'category' === $recent_articles_content_type ) {
+	$args = array(
+		'post_type'           => 'post',
+		'posts_per_page'      => absint( 5 ),
+		'ignore_sticky_posts' => true,
+	);
+	if ( ! empty( $recent_articles_category ) ) {
+		if ( is_numeric( $recent_articles_category ) ) {
+			$args['cat'] = absint( $recent_articles_category );
+		} else {
+			$args['category_name'] = sanitize_text_field( $recent_articles_category );
+		}
+	}
+} elseif ( 'tag' === $recent_articles_content_type ) {
+	$args = array(
+		'post_type'           => 'post',
+		'posts_per_page'      => absint( 5 ),
+		'ignore_sticky_posts' => true,
+	);
+	if ( ! empty( $recent_articles_tag ) ) {
+		$args['tag'] = sanitize_text_field( $recent_articles_tag );
+	}
 }
 
 $query = new WP_Query( $args );

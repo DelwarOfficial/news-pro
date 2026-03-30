@@ -17,6 +17,8 @@ if ( ! $world_news_section_enable ) {
 
 $section_title = get_theme_mod( 'news_record_world_news_title', esc_html__( 'World News', 'news-record' ) );
 $category      = get_theme_mod( 'news_record_world_news_category', 'world-news' );
+$tag           = get_theme_mod( 'news_record_world_news_tag', '' );
+$content_type  = get_theme_mod( 'news_record_world_news_content_type', 'category' );
 $post_count    = get_theme_mod( 'news_record_world_news_post_count', 5 );
 $layout        = 'tile-list';
 $columns       = 1;

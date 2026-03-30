@@ -17,6 +17,8 @@ if ( ! $entertainment_section_enable ) {
 
 $section_title = get_theme_mod( 'news_record_entertainment_title', esc_html__( 'Entertainment', 'news-record' ) );
 $category      = get_theme_mod( 'news_record_entertainment_category', 'entertainment' );
+$tag           = get_theme_mod( 'news_record_entertainment_tag', '' );
+$content_type  = get_theme_mod( 'news_record_entertainment_content_type', 'category' );
 $post_count    = get_theme_mod( 'news_record_entertainment_post_count', 6 );
 $layout        = 'two-col';
 $columns       = 2;

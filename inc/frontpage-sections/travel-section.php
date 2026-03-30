@@ -17,6 +17,8 @@ if ( ! $travel_section_enable ) {
 
 $section_title = get_theme_mod( 'news_record_travel_title', esc_html__( 'Travel', 'news-record' ) );
 $category      = get_theme_mod( 'news_record_travel_category', 'travel' );
+$tag           = get_theme_mod( 'news_record_travel_tag', '' );
+$content_type  = get_theme_mod( 'news_record_travel_content_type', 'category' );
 $post_count    = get_theme_mod( 'news_record_travel_post_count', 6 );
 $layout        = 'mixed-grid';
 $columns       = 3;

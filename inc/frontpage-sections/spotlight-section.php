@@ -17,6 +17,8 @@ if ( ! $spotlight_section_enable ) {
 
 $section_title = get_theme_mod( 'news_record_spotlight_title', esc_html__( 'Spotlight', 'news-record' ) );
 $category      = get_theme_mod( 'news_record_spotlight_category', 'spotlight' );
+$tag           = get_theme_mod( 'news_record_spotlight_tag', '' );
+$content_type  = get_theme_mod( 'news_record_spotlight_content_type', 'category' );
 $post_count    = get_theme_mod( 'news_record_spotlight_post_count', 5 );
 $layout        = 'spotlight';
 $columns       = 1;

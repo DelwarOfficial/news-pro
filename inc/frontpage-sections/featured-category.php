@@ -17,6 +17,8 @@ if ( ! $featured_category_section_enable ) {
 
 $section_title = get_theme_mod( 'news_record_featured_category_title', esc_html__( 'Featured', 'news-record' ) );
 $category      = get_theme_mod( 'news_record_featured_category_category', 'featured' );
+$tag           = get_theme_mod( 'news_record_featured_category_tag', '' );
+$content_type  = get_theme_mod( 'news_record_featured_category_content_type', 'category' );
 $post_count    = get_theme_mod( 'news_record_featured_category_post_count', 5 );
 $layout        = 'tile-list';
 $columns       = 1;

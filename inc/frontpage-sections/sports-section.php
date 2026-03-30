@@ -17,6 +17,8 @@ if ( ! $sports_section_enable ) {
 
 $section_title = get_theme_mod( 'news_record_sports_title', esc_html__( 'Sports', 'news-record' ) );
 $category      = get_theme_mod( 'news_record_sports_category', 'sports' );
+$tag           = get_theme_mod( 'news_record_sports_tag', '' );
+$content_type  = get_theme_mod( 'news_record_sports_content_type', 'category' );
 $post_count    = get_theme_mod( 'news_record_sports_post_count', 5 );
 $layout        = 'vertical';
 $columns       = 1;

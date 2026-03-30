@@ -15,6 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Expected variables (set by wrapper file beforehand):
  * $section_title - Section title string
  * $category      - Category slug or ID
+ * $tag           - Tag slug
+ * $content_type  - recent | category | tag
  * $layout        - Layout mode (tile-list, two-col, one-plus-3, vertical, spotlight, mixed-grid)
  * $post_count    - Number of posts to display
  * $columns       - Number of columns (for mixed grids)
@@ -26,6 +28,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Safe Defaults
 $section_title = isset( $section_title ) ? $section_title : '';
 $category      = isset( $category ) ? $category : '';
+$tag           = isset( $tag ) ? $tag : '';
+$content_type  = isset( $content_type ) ? $content_type : 'category';
 $layout        = isset( $layout ) ? $layout : 'tile-list';
 $post_count    = isset( $post_count ) ? absint( $post_count ) : 5;
 $columns       = isset( $columns ) ? absint( $columns ) : 3;
@@ -51,12 +55,14 @@ $args = array(
 	'ignore_sticky_posts' => true,
 );
 
-if ( ! empty( $category ) ) {
+if ( 'category' === $content_type && ! empty( $category ) ) {
 	if ( is_numeric( $category ) ) {
 		$args['cat'] = absint( $category );
 	} else {
 		$args['category_name'] = sanitize_text_field( $category );
 	}
+} elseif ( 'tag' === $content_type && ! empty( $tag ) ) {
+	$args['tag'] = sanitize_text_field( $tag );
 }
 
 $query = new WP_Query( $args );

@@ -17,6 +17,8 @@ if ( ! $interviews_section_enable ) {
 
 $section_title = get_theme_mod( 'news_record_interviews_title', esc_html__( 'Interviews', 'news-record' ) );
 $category      = get_theme_mod( 'news_record_interviews_category', 'interviews' );
+$tag           = get_theme_mod( 'news_record_interviews_tag', '' );
+$content_type  = get_theme_mod( 'news_record_interviews_content_type', 'category' );
 $post_count    = get_theme_mod( 'news_record_interviews_post_count', 4 );
 $layout        = 'one-plus-3';
 $columns       = 1;

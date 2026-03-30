@@ -17,6 +17,8 @@ if ( ! $technology_section_enable ) {
 
 $section_title = get_theme_mod( 'news_record_technology_title', esc_html__( 'Technology', 'news-record' ) );
 $category      = get_theme_mod( 'news_record_technology_category', 'technology' );
+$tag           = get_theme_mod( 'news_record_technology_tag', '' );
+$content_type  = get_theme_mod( 'news_record_technology_content_type', 'category' );
 $post_count    = get_theme_mod( 'news_record_technology_post_count', 5 );
 $layout        = 'tile-list';
 $columns       = 1;
