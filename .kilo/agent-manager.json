@@ -1,5 +1,18 @@
 {
-  "worktrees": {},
-  "sessions": {},
+  "worktrees": {
+    "wt-1774857956677-1": {
+      "branch": "fine-gateway",
+      "path": "c:\\Users\\Admin\\Local Sites\\rtv\\app\\public\\wp-content\\themes\\news-pro-expanded\\.kilo\\worktrees\\fine-gateway",
+      "parentBranch": "main",
+      "createdAt": "2026-03-30T08:05:56.677Z",
+      "remote": "origin"
+    }
+  },
+  "sessions": {
+    "ses_2c238c8f8ffez31oNho3OhpJ81": {
+      "worktreeId": "wt-1774857956677-1",
+      "createdAt": "2026-03-30T08:06:05.520Z"
+    }
+  },
   "sessionsCollapsed": true
 }

@@ -18,6 +18,19 @@ require get_template_directory() . '/inc/frontpage-sections/posts-carousel.php';
 
 require get_template_directory() . '/inc/frontpage-sections/videos.php';
 
+// Category-based sections using reusable engine.
+require get_template_directory() . '/inc/frontpage-sections/featured-category.php';
+
+require get_template_directory() . '/inc/frontpage-sections/entertainment-section.php';
+
+require get_template_directory() . '/inc/frontpage-sections/travel-section.php';
+
+require get_template_directory() . '/inc/frontpage-sections/sports-section.php';
+
+require get_template_directory() . '/inc/frontpage-sections/technology-section.php';
+
+require get_template_directory() . '/inc/frontpage-sections/business-section.php';
+
 // Widget areas.
 require get_template_directory() . '/inc/frontpage-sections/widgets-area/main-widgets-area.php';
 
