@@ -19,15 +19,29 @@ require get_template_directory() . '/inc/frontpage-sections/posts-carousel.php';
 require get_template_directory() . '/inc/frontpage-sections/videos.php';
 
 // Category-based sections using reusable engine.
+require get_template_directory() . '/inc/frontpage-sections/world-news-section.php';
+
+require get_template_directory() . '/inc/frontpage-sections/politics-section.php';
+
+require get_template_directory() . '/inc/frontpage-sections/lifestyle-section.php';
+
+require get_template_directory() . '/inc/frontpage-sections/opinions-section.php';
+
+require get_template_directory() . '/inc/frontpage-sections/interviews-section.php';
+
+require get_template_directory() . '/inc/frontpage-sections/spotlight-section.php';
+
+require get_template_directory() . '/inc/frontpage-sections/sports-section.php';
+
+require get_template_directory() . '/inc/frontpage-sections/in-depth-section.php';
+
+require get_template_directory() . '/inc/frontpage-sections/technology-section.php';
+
 require get_template_directory() . '/inc/frontpage-sections/featured-category.php';
 
 require get_template_directory() . '/inc/frontpage-sections/entertainment-section.php';
 
 require get_template_directory() . '/inc/frontpage-sections/travel-section.php';
-
-require get_template_directory() . '/inc/frontpage-sections/sports-section.php';
-
-require get_template_directory() . '/inc/frontpage-sections/technology-section.php';
 
 require get_template_directory() . '/inc/frontpage-sections/business-section.php';
 

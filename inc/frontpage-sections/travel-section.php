@@ -15,10 +15,10 @@ if ( ! $travel_section_enable ) {
 	return;
 }
 
-$section_title = get_theme_mod( 'news_record_travel_title', __( 'Travel', 'news-record' ) );
+$section_title = get_theme_mod( 'news_record_travel_title', esc_html__( 'Travel', 'news-record' ) );
 $category      = get_theme_mod( 'news_record_travel_category', 'travel' );
+$post_count    = get_theme_mod( 'news_record_travel_post_count', 6 );
 $layout        = 'mixed-grid';
-$post_count    = 6;
 $columns       = 3;
 $show_meta     = true;
 $show_excerpt  = false;

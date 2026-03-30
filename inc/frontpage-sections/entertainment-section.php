@@ -3,14 +3,22 @@
  * Entertainment Category Section
  *
  * Displays posts from the Entertainment category using the reusable category-section engine.
+ * Configurable via Theme Customizer > Frontpage Sections > Entertainment Section.
  *
  * @package News Record
  */
 
-$section_title = __( 'Entertainment', 'news-record' );
-$category      = 'entertainment'; // Category slug
-$layout        = 'two-col'; // Layout mode: two-column grid
-$post_count    = 6; // 6 posts in 2 columns
+// Check if the section is enabled via Customizer.
+$entertainment_section_enable = get_theme_mod( 'news_record_entertainment_section_enable', false );
+
+if ( ! $entertainment_section_enable ) {
+	return;
+}
+
+$section_title = get_theme_mod( 'news_record_entertainment_title', esc_html__( 'Entertainment', 'news-record' ) );
+$category      = get_theme_mod( 'news_record_entertainment_category', 'entertainment' );
+$post_count    = get_theme_mod( 'news_record_entertainment_post_count', 6 );
+$layout        = 'two-col';
 $columns       = 2;
 $show_meta     = true;
 $show_excerpt  = true;

@@ -40,6 +40,25 @@
 	</div>
 <?php endif; ?>
 
+	<div class="footer-brand-section">
+		<div class="site-container-width">
+			<div class="footer-brand-wrapper">
+				<div class="footer-brand-logo">
+					<?php if ( has_custom_logo() ) : ?>
+						<?php the_custom_logo(); ?>
+					<?php else : ?>
+						<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-brand-text">
+							<h3><?php bloginfo( 'name' ); ?></h3>
+						</a>
+					<?php endif; ?>
+				</div>
+				<div class="footer-brand-desc">
+					<p><?php bloginfo( 'description' ); ?></p>
+				</div>
+			</div>
+		</div>
+	</div>
+
 <?php
 $news_record_search = array( '[the-year]', '[site-link]' );
 $replace            = array( date( 'Y' ), '<a href="' . esc_url( home_url( '/' ) ) . '">' . esc_attr( get_bloginfo( 'name', 'display' ) ) . '</a>' );
@@ -52,11 +71,11 @@ $copyright_text     = str_replace( $news_record_search, $replace, $copyright_tex
 			<div class="lower-footer-info">
 				<?php if ( get_theme_mod( 'news_record_footer_newsletter_enable', true ) ) : ?>
 				<div class="footer-newsletter">
-					<h4><?php echo esc_html( get_theme_mod( 'news_record_footer_newsletter_title', __( 'Subscribe to Newsletter', 'news-record' ) ) ); ?></h4>
-					<p><?php echo esc_html( get_theme_mod( 'news_record_footer_newsletter_desc', __( 'Get the latest news and updates delivered to your inbox.', 'news-record' ) ) ); ?></p>
+					<h4><?php echo esc_html( get_theme_mod( 'news_record_footer_newsletter_title', esc_html__( 'Subscribe to Newsletter', 'news-record' ) ) ); ?></h4>
+					<p><?php echo esc_html( get_theme_mod( 'news_record_footer_newsletter_desc', esc_html__( 'Get the latest news and updates delivered to your inbox.', 'news-record' ) ) ); ?></p>
 					<form class="newsletter-form" action="#" method="post">
 						<input type="email" name="email" placeholder="<?php esc_attr_e( 'Enter your email', 'news-record' ); ?>" required>
-						<button type="submit"><?php echo esc_html( get_theme_mod( 'news_record_footer_newsletter_button', __( 'Subscribe', 'news-record' ) ) ); ?></button>
+						<button type="submit"><?php echo esc_html( get_theme_mod( 'news_record_footer_newsletter_button', esc_html__( 'Subscribe', 'news-record' ) ) ); ?></button>
 					</form>
 				</div>
 				<?php endif; ?>

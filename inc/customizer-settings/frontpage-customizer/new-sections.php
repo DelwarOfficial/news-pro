@@ -762,7 +762,7 @@ $wp_customize->add_control(
 	)
 );
 
-// Category picker.
+// Category slug.
 $wp_customize->add_setting(
 	'news_record_travel_category',
 	array(
@@ -781,7 +781,1162 @@ $wp_customize->add_control(
 	)
 );
 
-// Active callbacks.
+// Post count.
+$wp_customize->add_setting(
+	'news_record_travel_post_count',
+	array(
+		'default'           => 6,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_travel_post_count',
+	array(
+		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
+		'section'         => 'news_record_travel_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 3,
+			'max'  => 12,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_travel_enabled',
+	)
+);
+
+/* ============================================================
+   7. WORLD NEWS SECTION
+   ============================================================ */
+
+$wp_customize->add_section(
+	'news_record_world_news_section',
+	array(
+		'title'    => esc_html__( 'World News Section', 'news-record' ),
+		'panel'    => 'news_record_frontpage_panel',
+		'priority' => 210,
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_world_news_section_enable',
+	array(
+		'default'           => false,
+		'sanitize_callback' => 'news_record_sanitize_checkbox',
+	)
+);
+$wp_customize->add_control(
+	new News_Record_Toggle_Checkbox_Custom_control(
+		$wp_customize,
+		'news_record_world_news_section_enable',
+		array(
+			'label'    => esc_html__( 'Enable World News Section', 'news-record' ),
+			'type'     => 'checkbox',
+			'settings' => 'news_record_world_news_section_enable',
+			'section'  => 'news_record_world_news_section',
+		)
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_world_news_title',
+	array(
+		'default'           => __( 'World News', 'news-record' ),
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_world_news_title',
+	array(
+		'label'           => esc_html__( 'Section Title', 'news-record' ),
+		'section'         => 'news_record_world_news_section',
+		'active_callback' => 'news_record_if_world_news_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_world_news_category',
+	array(
+		'default'           => 'world-news',
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_world_news_category',
+	array(
+		'label'           => esc_html__( 'Category Slug', 'news-record' ),
+		'description'     => esc_html__( 'Enter the category slug to display posts from.', 'news-record' ),
+		'section'         => 'news_record_world_news_section',
+		'type'            => 'text',
+		'active_callback' => 'news_record_if_world_news_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_world_news_post_count',
+	array(
+		'default'           => 5,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_world_news_post_count',
+	array(
+		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
+		'section'         => 'news_record_world_news_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 3,
+			'max'  => 12,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_world_news_enabled',
+	)
+);
+
+/* ============================================================
+   8. POLITICS SECTION
+   ============================================================ */
+
+$wp_customize->add_section(
+	'news_record_politics_section',
+	array(
+		'title'    => esc_html__( 'Politics Section', 'news-record' ),
+		'panel'    => 'news_record_frontpage_panel',
+		'priority' => 220,
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_politics_section_enable',
+	array(
+		'default'           => false,
+		'sanitize_callback' => 'news_record_sanitize_checkbox',
+	)
+);
+$wp_customize->add_control(
+	new News_Record_Toggle_Checkbox_Custom_control(
+		$wp_customize,
+		'news_record_politics_section_enable',
+		array(
+			'label'    => esc_html__( 'Enable Politics Section', 'news-record' ),
+			'type'     => 'checkbox',
+			'settings' => 'news_record_politics_section_enable',
+			'section'  => 'news_record_politics_section',
+		)
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_politics_title',
+	array(
+		'default'           => __( 'Politics', 'news-record' ),
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_politics_title',
+	array(
+		'label'           => esc_html__( 'Section Title', 'news-record' ),
+		'section'         => 'news_record_politics_section',
+		'active_callback' => 'news_record_if_politics_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_politics_category',
+	array(
+		'default'           => 'politics',
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_politics_category',
+	array(
+		'label'           => esc_html__( 'Category Slug', 'news-record' ),
+		'description'     => esc_html__( 'Enter the category slug to display posts from.', 'news-record' ),
+		'section'         => 'news_record_politics_section',
+		'type'            => 'text',
+		'active_callback' => 'news_record_if_politics_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_politics_post_count',
+	array(
+		'default'           => 6,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_politics_post_count',
+	array(
+		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
+		'section'         => 'news_record_politics_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 3,
+			'max'  => 12,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_politics_enabled',
+	)
+);
+
+/* ============================================================
+   9. LIFESTYLE SECTION
+   ============================================================ */
+
+$wp_customize->add_section(
+	'news_record_lifestyle_section',
+	array(
+		'title'    => esc_html__( 'Lifestyle Section', 'news-record' ),
+		'panel'    => 'news_record_frontpage_panel',
+		'priority' => 230,
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_lifestyle_section_enable',
+	array(
+		'default'           => false,
+		'sanitize_callback' => 'news_record_sanitize_checkbox',
+	)
+);
+$wp_customize->add_control(
+	new News_Record_Toggle_Checkbox_Custom_control(
+		$wp_customize,
+		'news_record_lifestyle_section_enable',
+		array(
+			'label'    => esc_html__( 'Enable Lifestyle Section', 'news-record' ),
+			'type'     => 'checkbox',
+			'settings' => 'news_record_lifestyle_section_enable',
+			'section'  => 'news_record_lifestyle_section',
+		)
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_lifestyle_title',
+	array(
+		'default'           => __( 'Lifestyle', 'news-record' ),
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_lifestyle_title',
+	array(
+		'label'           => esc_html__( 'Section Title', 'news-record' ),
+		'section'         => 'news_record_lifestyle_section',
+		'active_callback' => 'news_record_if_lifestyle_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_lifestyle_category',
+	array(
+		'default'           => 'lifestyle',
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_lifestyle_category',
+	array(
+		'label'           => esc_html__( 'Category Slug', 'news-record' ),
+		'description'     => esc_html__( 'Enter the category slug to display posts from.', 'news-record' ),
+		'section'         => 'news_record_lifestyle_section',
+		'type'            => 'text',
+		'active_callback' => 'news_record_if_lifestyle_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_lifestyle_post_count',
+	array(
+		'default'           => 6,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_lifestyle_post_count',
+	array(
+		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
+		'section'         => 'news_record_lifestyle_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 3,
+			'max'  => 12,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_lifestyle_enabled',
+	)
+);
+
+/* ============================================================
+   10. OPINIONS SECTION
+   ============================================================ */
+
+$wp_customize->add_section(
+	'news_record_opinions_section',
+	array(
+		'title'    => esc_html__( 'Opinions Section', 'news-record' ),
+		'panel'    => 'news_record_frontpage_panel',
+		'priority' => 240,
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_opinions_section_enable',
+	array(
+		'default'           => false,
+		'sanitize_callback' => 'news_record_sanitize_checkbox',
+	)
+);
+$wp_customize->add_control(
+	new News_Record_Toggle_Checkbox_Custom_control(
+		$wp_customize,
+		'news_record_opinions_section_enable',
+		array(
+			'label'    => esc_html__( 'Enable Opinions Section', 'news-record' ),
+			'type'     => 'checkbox',
+			'settings' => 'news_record_opinions_section_enable',
+			'section'  => 'news_record_opinions_section',
+		)
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_opinions_title',
+	array(
+		'default'           => __( 'Opinions', 'news-record' ),
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_opinions_title',
+	array(
+		'label'           => esc_html__( 'Section Title', 'news-record' ),
+		'section'         => 'news_record_opinions_section',
+		'active_callback' => 'news_record_if_opinions_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_opinions_category',
+	array(
+		'default'           => 'opinions',
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_opinions_category',
+	array(
+		'label'           => esc_html__( 'Category Slug', 'news-record' ),
+		'description'     => esc_html__( 'Enter the category slug to display posts from.', 'news-record' ),
+		'section'         => 'news_record_opinions_section',
+		'type'            => 'text',
+		'active_callback' => 'news_record_if_opinions_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_opinions_post_count',
+	array(
+		'default'           => 4,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_opinions_post_count',
+	array(
+		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
+		'section'         => 'news_record_opinions_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 3,
+			'max'  => 12,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_opinions_enabled',
+	)
+);
+
+/* ============================================================
+   11. INTERVIEWS SECTION
+   ============================================================ */
+
+$wp_customize->add_section(
+	'news_record_interviews_section',
+	array(
+		'title'    => esc_html__( 'Interviews Section', 'news-record' ),
+		'panel'    => 'news_record_frontpage_panel',
+		'priority' => 250,
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_interviews_section_enable',
+	array(
+		'default'           => false,
+		'sanitize_callback' => 'news_record_sanitize_checkbox',
+	)
+);
+$wp_customize->add_control(
+	new News_Record_Toggle_Checkbox_Custom_control(
+		$wp_customize,
+		'news_record_interviews_section_enable',
+		array(
+			'label'    => esc_html__( 'Enable Interviews Section', 'news-record' ),
+			'type'     => 'checkbox',
+			'settings' => 'news_record_interviews_section_enable',
+			'section'  => 'news_record_interviews_section',
+		)
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_interviews_title',
+	array(
+		'default'           => __( 'Interviews', 'news-record' ),
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_interviews_title',
+	array(
+		'label'           => esc_html__( 'Section Title', 'news-record' ),
+		'section'         => 'news_record_interviews_section',
+		'active_callback' => 'news_record_if_interviews_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_interviews_category',
+	array(
+		'default'           => 'interviews',
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_interviews_category',
+	array(
+		'label'           => esc_html__( 'Category Slug', 'news-record' ),
+		'description'     => esc_html__( 'Enter the category slug to display posts from.', 'news-record' ),
+		'section'         => 'news_record_interviews_section',
+		'type'            => 'text',
+		'active_callback' => 'news_record_if_interviews_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_interviews_post_count',
+	array(
+		'default'           => 4,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_interviews_post_count',
+	array(
+		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
+		'section'         => 'news_record_interviews_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 3,
+			'max'  => 12,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_interviews_enabled',
+	)
+);
+
+/* ============================================================
+   12. SPOTLIGHT SECTION
+   ============================================================ */
+
+$wp_customize->add_section(
+	'news_record_spotlight_section',
+	array(
+		'title'    => esc_html__( 'Spotlight Section', 'news-record' ),
+		'panel'    => 'news_record_frontpage_panel',
+		'priority' => 260,
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_spotlight_section_enable',
+	array(
+		'default'           => false,
+		'sanitize_callback' => 'news_record_sanitize_checkbox',
+	)
+);
+$wp_customize->add_control(
+	new News_Record_Toggle_Checkbox_Custom_control(
+		$wp_customize,
+		'news_record_spotlight_section_enable',
+		array(
+			'label'    => esc_html__( 'Enable Spotlight Section', 'news-record' ),
+			'type'     => 'checkbox',
+			'settings' => 'news_record_spotlight_section_enable',
+			'section'  => 'news_record_spotlight_section',
+		)
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_spotlight_title',
+	array(
+		'default'           => __( 'Spotlight', 'news-record' ),
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_spotlight_title',
+	array(
+		'label'           => esc_html__( 'Section Title', 'news-record' ),
+		'section'         => 'news_record_spotlight_section',
+		'active_callback' => 'news_record_if_spotlight_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_spotlight_category',
+	array(
+		'default'           => 'spotlight',
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_spotlight_category',
+	array(
+		'label'           => esc_html__( 'Category Slug', 'news-record' ),
+		'description'     => esc_html__( 'Enter the category slug to display posts from.', 'news-record' ),
+		'section'         => 'news_record_spotlight_section',
+		'type'            => 'text',
+		'active_callback' => 'news_record_if_spotlight_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_spotlight_post_count',
+	array(
+		'default'           => 5,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_spotlight_post_count',
+	array(
+		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
+		'section'         => 'news_record_spotlight_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 3,
+			'max'  => 12,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_spotlight_enabled',
+	)
+);
+
+/* ============================================================
+   13. SPORTS SECTION
+   ============================================================ */
+
+$wp_customize->add_section(
+	'news_record_sports_section',
+	array(
+		'title'    => esc_html__( 'Sports Section', 'news-record' ),
+		'panel'    => 'news_record_frontpage_panel',
+		'priority' => 270,
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_sports_section_enable',
+	array(
+		'default'           => false,
+		'sanitize_callback' => 'news_record_sanitize_checkbox',
+	)
+);
+$wp_customize->add_control(
+	new News_Record_Toggle_Checkbox_Custom_control(
+		$wp_customize,
+		'news_record_sports_section_enable',
+		array(
+			'label'    => esc_html__( 'Enable Sports Section', 'news-record' ),
+			'type'     => 'checkbox',
+			'settings' => 'news_record_sports_section_enable',
+			'section'  => 'news_record_sports_section',
+		)
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_sports_title',
+	array(
+		'default'           => __( 'Sports', 'news-record' ),
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_sports_title',
+	array(
+		'label'           => esc_html__( 'Section Title', 'news-record' ),
+		'section'         => 'news_record_sports_section',
+		'active_callback' => 'news_record_if_sports_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_sports_category',
+	array(
+		'default'           => 'sports',
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_sports_category',
+	array(
+		'label'           => esc_html__( 'Category Slug', 'news-record' ),
+		'description'     => esc_html__( 'Enter the category slug to display posts from.', 'news-record' ),
+		'section'         => 'news_record_sports_section',
+		'type'            => 'text',
+		'active_callback' => 'news_record_if_sports_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_sports_post_count',
+	array(
+		'default'           => 5,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_sports_post_count',
+	array(
+		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
+		'section'         => 'news_record_sports_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 3,
+			'max'  => 12,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_sports_enabled',
+	)
+);
+
+/* ============================================================
+   14. IN-DEPTH SECTION
+   ============================================================ */
+
+$wp_customize->add_section(
+	'news_record_in_depth_section',
+	array(
+		'title'    => esc_html__( 'In-Depth Section', 'news-record' ),
+		'panel'    => 'news_record_frontpage_panel',
+		'priority' => 280,
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_in_depth_section_enable',
+	array(
+		'default'           => false,
+		'sanitize_callback' => 'news_record_sanitize_checkbox',
+	)
+);
+$wp_customize->add_control(
+	new News_Record_Toggle_Checkbox_Custom_control(
+		$wp_customize,
+		'news_record_in_depth_section_enable',
+		array(
+			'label'    => esc_html__( 'Enable In-Depth Section', 'news-record' ),
+			'type'     => 'checkbox',
+			'settings' => 'news_record_in_depth_section_enable',
+			'section'  => 'news_record_in_depth_section',
+		)
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_in_depth_title',
+	array(
+		'default'           => __( 'In-Depth', 'news-record' ),
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_in_depth_title',
+	array(
+		'label'           => esc_html__( 'Section Title', 'news-record' ),
+		'section'         => 'news_record_in_depth_section',
+		'active_callback' => 'news_record_if_in_depth_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_in_depth_category',
+	array(
+		'default'           => 'in-depth',
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_in_depth_category',
+	array(
+		'label'           => esc_html__( 'Category Slug', 'news-record' ),
+		'description'     => esc_html__( 'Enter the category slug to display posts from.', 'news-record' ),
+		'section'         => 'news_record_in_depth_section',
+		'type'            => 'text',
+		'active_callback' => 'news_record_if_in_depth_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_in_depth_post_count',
+	array(
+		'default'           => 7,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_in_depth_post_count',
+	array(
+		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
+		'section'         => 'news_record_in_depth_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 3,
+			'max'  => 12,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_in_depth_enabled',
+	)
+);
+
+/* ============================================================
+   15. TECHNOLOGY SECTION
+   ============================================================ */
+
+$wp_customize->add_section(
+	'news_record_technology_section',
+	array(
+		'title'    => esc_html__( 'Technology Section', 'news-record' ),
+		'panel'    => 'news_record_frontpage_panel',
+		'priority' => 290,
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_technology_section_enable',
+	array(
+		'default'           => false,
+		'sanitize_callback' => 'news_record_sanitize_checkbox',
+	)
+);
+$wp_customize->add_control(
+	new News_Record_Toggle_Checkbox_Custom_control(
+		$wp_customize,
+		'news_record_technology_section_enable',
+		array(
+			'label'    => esc_html__( 'Enable Technology Section', 'news-record' ),
+			'type'     => 'checkbox',
+			'settings' => 'news_record_technology_section_enable',
+			'section'  => 'news_record_technology_section',
+		)
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_technology_title',
+	array(
+		'default'           => __( 'Technology', 'news-record' ),
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_technology_title',
+	array(
+		'label'           => esc_html__( 'Section Title', 'news-record' ),
+		'section'         => 'news_record_technology_section',
+		'active_callback' => 'news_record_if_technology_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_technology_category',
+	array(
+		'default'           => 'technology',
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_technology_category',
+	array(
+		'label'           => esc_html__( 'Category Slug', 'news-record' ),
+		'description'     => esc_html__( 'Enter the category slug to display posts from.', 'news-record' ),
+		'section'         => 'news_record_technology_section',
+		'type'            => 'text',
+		'active_callback' => 'news_record_if_technology_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_technology_post_count',
+	array(
+		'default'           => 5,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_technology_post_count',
+	array(
+		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
+		'section'         => 'news_record_technology_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 3,
+			'max'  => 12,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_technology_enabled',
+	)
+);
+
+/* ============================================================
+   16. FEATURED CATEGORY SECTION
+   ============================================================ */
+
+$wp_customize->add_section(
+	'news_record_featured_category_section',
+	array(
+		'title'    => esc_html__( 'Featured Category Section', 'news-record' ),
+		'panel'    => 'news_record_frontpage_panel',
+		'priority' => 300,
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_featured_category_section_enable',
+	array(
+		'default'           => false,
+		'sanitize_callback' => 'news_record_sanitize_checkbox',
+	)
+);
+$wp_customize->add_control(
+	new News_Record_Toggle_Checkbox_Custom_control(
+		$wp_customize,
+		'news_record_featured_category_section_enable',
+		array(
+			'label'    => esc_html__( 'Enable Featured Category Section', 'news-record' ),
+			'type'     => 'checkbox',
+			'settings' => 'news_record_featured_category_section_enable',
+			'section'  => 'news_record_featured_category_section',
+		)
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_featured_category_title',
+	array(
+		'default'           => __( 'Featured', 'news-record' ),
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_featured_category_title',
+	array(
+		'label'           => esc_html__( 'Section Title', 'news-record' ),
+		'section'         => 'news_record_featured_category_section',
+		'active_callback' => 'news_record_if_featured_category_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_featured_category_category',
+	array(
+		'default'           => 'featured',
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_featured_category_category',
+	array(
+		'label'           => esc_html__( 'Category Slug', 'news-record' ),
+		'description'     => esc_html__( 'Enter the category slug to display posts from.', 'news-record' ),
+		'section'         => 'news_record_featured_category_section',
+		'type'            => 'text',
+		'active_callback' => 'news_record_if_featured_category_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_featured_category_post_count',
+	array(
+		'default'           => 5,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_featured_category_post_count',
+	array(
+		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
+		'section'         => 'news_record_featured_category_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 3,
+			'max'  => 12,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_featured_category_enabled',
+	)
+);
+
+/* ============================================================
+   17. ENTERTAINMENT SECTION
+   ============================================================ */
+
+$wp_customize->add_section(
+	'news_record_entertainment_section',
+	array(
+		'title'    => esc_html__( 'Entertainment Section', 'news-record' ),
+		'panel'    => 'news_record_frontpage_panel',
+		'priority' => 310,
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_entertainment_section_enable',
+	array(
+		'default'           => false,
+		'sanitize_callback' => 'news_record_sanitize_checkbox',
+	)
+);
+$wp_customize->add_control(
+	new News_Record_Toggle_Checkbox_Custom_control(
+		$wp_customize,
+		'news_record_entertainment_section_enable',
+		array(
+			'label'    => esc_html__( 'Enable Entertainment Section', 'news-record' ),
+			'type'     => 'checkbox',
+			'settings' => 'news_record_entertainment_section_enable',
+			'section'  => 'news_record_entertainment_section',
+		)
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_entertainment_title',
+	array(
+		'default'           => __( 'Entertainment', 'news-record' ),
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_entertainment_title',
+	array(
+		'label'           => esc_html__( 'Section Title', 'news-record' ),
+		'section'         => 'news_record_entertainment_section',
+		'active_callback' => 'news_record_if_entertainment_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_entertainment_category',
+	array(
+		'default'           => 'entertainment',
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_entertainment_category',
+	array(
+		'label'           => esc_html__( 'Category Slug', 'news-record' ),
+		'description'     => esc_html__( 'Enter the category slug to display posts from.', 'news-record' ),
+		'section'         => 'news_record_entertainment_section',
+		'type'            => 'text',
+		'active_callback' => 'news_record_if_entertainment_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_entertainment_post_count',
+	array(
+		'default'           => 6,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_entertainment_post_count',
+	array(
+		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
+		'section'         => 'news_record_entertainment_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 3,
+			'max'  => 12,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_entertainment_enabled',
+	)
+);
+
+/* ============================================================
+   18. BUSINESS SECTION
+   ============================================================ */
+
+$wp_customize->add_section(
+	'news_record_business_section',
+	array(
+		'title'    => esc_html__( 'Business Section', 'news-record' ),
+		'panel'    => 'news_record_frontpage_panel',
+		'priority' => 320,
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_business_section_enable',
+	array(
+		'default'           => false,
+		'sanitize_callback' => 'news_record_sanitize_checkbox',
+	)
+);
+$wp_customize->add_control(
+	new News_Record_Toggle_Checkbox_Custom_control(
+		$wp_customize,
+		'news_record_business_section_enable',
+		array(
+			'label'    => esc_html__( 'Enable Business Section', 'news-record' ),
+			'type'     => 'checkbox',
+			'settings' => 'news_record_business_section_enable',
+			'section'  => 'news_record_business_section',
+		)
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_business_title',
+	array(
+		'default'           => __( 'Business', 'news-record' ),
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_business_title',
+	array(
+		'label'           => esc_html__( 'Section Title', 'news-record' ),
+		'section'         => 'news_record_business_section',
+		'active_callback' => 'news_record_if_business_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_business_category',
+	array(
+		'default'           => 'business',
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_business_category',
+	array(
+		'label'           => esc_html__( 'Category Slug', 'news-record' ),
+		'description'     => esc_html__( 'Enter the category slug to display posts from.', 'news-record' ),
+		'section'         => 'news_record_business_section',
+		'type'            => 'text',
+		'active_callback' => 'news_record_if_business_enabled',
+	)
+);
+
+$wp_customize->add_setting(
+	'news_record_business_post_count',
+	array(
+		'default'           => 4,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_business_post_count',
+	array(
+		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
+		'section'         => 'news_record_business_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 3,
+			'max'  => 12,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_business_enabled',
+	)
+);
+
+/* ============================================================
+   ACTIVE CALLBACKS — Category Sections
+   ============================================================ */
+
+// Travel.
 function news_record_if_travel_enabled( $control ) {
 	return $control->manager->get_setting( 'news_record_travel_section_enable' )->value();
+}
+
+// World News.
+function news_record_if_world_news_enabled( $control ) {
+	return $control->manager->get_setting( 'news_record_world_news_section_enable' )->value();
+}
+
+// Politics.
+function news_record_if_politics_enabled( $control ) {
+	return $control->manager->get_setting( 'news_record_politics_section_enable' )->value();
+}
+
+// Lifestyle.
+function news_record_if_lifestyle_enabled( $control ) {
+	return $control->manager->get_setting( 'news_record_lifestyle_section_enable' )->value();
+}
+
+// Opinions.
+function news_record_if_opinions_enabled( $control ) {
+	return $control->manager->get_setting( 'news_record_opinions_section_enable' )->value();
+}
+
+// Interviews.
+function news_record_if_interviews_enabled( $control ) {
+	return $control->manager->get_setting( 'news_record_interviews_section_enable' )->value();
+}
+
+// Spotlight.
+function news_record_if_spotlight_enabled( $control ) {
+	return $control->manager->get_setting( 'news_record_spotlight_section_enable' )->value();
+}
+
+// Sports.
+function news_record_if_sports_enabled( $control ) {
+	return $control->manager->get_setting( 'news_record_sports_section_enable' )->value();
+}
+
+// In-Depth.
+function news_record_if_in_depth_enabled( $control ) {
+	return $control->manager->get_setting( 'news_record_in_depth_section_enable' )->value();
+}
+
+// Technology.
+function news_record_if_technology_enabled( $control ) {
+	return $control->manager->get_setting( 'news_record_technology_section_enable' )->value();
+}
+
+// Featured Category.
+function news_record_if_featured_category_enabled( $control ) {
+	return $control->manager->get_setting( 'news_record_featured_category_section_enable' )->value();
+}
+
+// Entertainment.
+function news_record_if_entertainment_enabled( $control ) {
+	return $control->manager->get_setting( 'news_record_entertainment_section_enable' )->value();
+}
+
+// Business.
+function news_record_if_business_enabled( $control ) {
+	return $control->manager->get_setting( 'news_record_business_section_enable' )->value();
 }

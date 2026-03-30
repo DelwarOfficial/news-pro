@@ -156,4 +156,18 @@ jQuery(function ($) {
     $("html, body").animate({ scrollTop: 0 }, 300);
   });
 
+  /* -----------------------------------------
+    Sticky Header
+    ----------------------------------------- */
+  var $siteHeader = $(".site-header");
+  var headerHeight = $siteHeader.outerHeight();
+  
+  $(window).on("scroll", function () {
+    if ($(this).scrollTop() > 100) {
+      $siteHeader.addClass("sticky-header");
+    } else {
+      $siteHeader.removeClass("sticky-header");
+    }
+  });
+
 });

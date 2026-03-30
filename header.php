@@ -25,13 +25,15 @@
 	<div id="page" class="site">
 		<a class="skip-link screen-reader-text" href="#primary-content"><?php esc_html_e( 'Skip to content', 'news-record' ); ?></a>
 
-		<div id="loader">
-			<div class="loader-container">
-				<div id="preloader">
-					<div class="pre-loader-3"></div>
+		<?php if ( ! is_customize_preview() ) : ?>
+			<div id="loader">
+				<div class="loader-container">
+					<div id="preloader">
+						<div class="pre-loader-3"></div>
+					</div>
 				</div>
-			</div>
-		</div><!-- #loader -->
+			</div><!-- #loader -->
+		<?php endif; ?>
 
 		<?php
 		$header_btn     = get_theme_mod( 'news_record_header_button_label', __( 'Sign In', 'news-record' ) );
@@ -39,6 +41,29 @@
 		?>
 
 		<header id="masthead" class="site-header">
+			<div class="topbar">
+				<div class="site-container-width">
+					<div class="topbar-wrapper">
+						<div class="topbar-date">
+							<span class="current-date"><?php echo date_i18n('l, F j, Y'); ?></span>
+						</div>
+						<div class="topbar-social">
+							<?php
+							if ( has_nav_menu( 'social' ) ) {
+								wp_nav_menu(
+									array(
+										'menu_class'  => 'menu social-links',
+										'link_before' => '<span class="screen-reader-text">',
+										'link_after'  => '</span>',
+										'theme_location' => 'social',
+									)
+								);
+							}
+							?>
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<?php require get_template_directory() . '/inc/frontpage-sections/highlights-news.php';?>
 
