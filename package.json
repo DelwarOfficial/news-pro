@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "tailwindcss -i ./src/css/tailwind.css -o ./assets/css/tailwind-output.css --watch",
     "build": "tailwindcss -i ./src/css/tailwind.css -o ./assets/css/tailwind-output.css --minify",
+    "clean-css": "node clean-css.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,6 +22,7 @@
   },
   "homepage": "https://github.com/DelwarOfficial/news-pro#readme",
   "devDependencies": {
+    "purgecss": "^8.0.0",
     "tailwindcss": "^3.4.17"
   }
 }
