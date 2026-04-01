@@ -30,6 +30,14 @@ wp_enqueue_script( 'conveyor-ticker-script', get_template_directory_uri() . '/as
 // Custom script.
 wp_enqueue_script( 'news-record-custom-script', get_template_directory_uri() . '/assets/js/custom.min.js', array( 'jquery', 'slick-script' ), NEWS_RECORD_VERSION, true );
 
+// Ensure Highlights ticker initializes cleanly (Customizer + first paint safety).
+$highlights_inline = 'jQuery(function($){
+	var initConveyor=function(){ if(!$(".js-conveyor").length) return; $(".js-conveyor").each(function(){ var $el=$(this); if($el.hasClass("jctkr-initialized")) return; $el.jConveyorTicker({anim_duration:200,force_loop:true,start_paused:false}); }); };
+	initConveyor();
+	if(typeof wp!=="undefined" && wp.customize && wp.customize.selectiveRefresh){ wp.customize.selectiveRefresh.bind("partial-content-rendered", function(){ initConveyor(); }); }
+});';
+wp_add_inline_script( 'news-record-custom-script', $highlights_inline );
+
 if ( is_customize_preview() ) {
 	$customizer_safe_script = '(function($){$.fn.jConveyorTicker=$.fn.jConveyorTicker||function(){return this;};$.fn.slick=$.fn.slick||function(){return this;};$("#preloader,#loader").hide();})(jQuery);';
 	wp_add_inline_script( 'news-record-custom-script', $customizer_safe_script, 'before' );

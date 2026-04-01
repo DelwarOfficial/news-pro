@@ -10,16 +10,31 @@ jQuery(function ($) {
   $("#loader").delay(1000).fadeOut("slow");
 
   /* -----------------------------------------
-    News Highlights
+    News Highlights (ticker init with Customizer safety)
     ----------------------------------------- */
-    jQuery(document).ready(function($){
-        if ($('.js-conveyor').length) {
-            $('.js-conveyor').jConveyorTicker({
-                anim_duration: 200,
-                force_loop: true,
-            });
-        }
-    }); 
+  jQuery(document).ready(function($){
+    const initConveyor = function() {
+      if ( ! $('.js-conveyor').length ) return;
+      $('.js-conveyor').each(function(){
+        const $el = $(this);
+        if ( $el.hasClass('jctkr-initialized') ) return;
+        $el.jConveyorTicker({
+          anim_duration: 200,
+          force_loop: true,
+          start_paused: false,
+        });
+      });
+    };
+
+    initConveyor();
+
+    // In Customizer preview, re-run after partial refresh to avoid broken first paint.
+    if ( typeof wp !== 'undefined' && wp.customize && wp.customize.selectiveRefresh ) {
+      wp.customize.selectiveRefresh.bind( 'partial-content-rendered', function() {
+        initConveyor();
+      } );
+    }
+  });
 
   /*--------------------------------------------------------------
     # Navigation menu responsive

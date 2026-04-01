@@ -740,6 +740,48 @@ function news_record_tri_col_3_content_type_tag( $control ) {
 	return news_record_if_tri_col_enabled( $control ) && ( 'tag' === $type );
 }
 
+/** Four-Column section */
+function news_record_if_four_col_enabled( $control ) {
+	return $control->manager->get_setting( 'news_record_four_col_section_enable' )->value();
+}
+function news_record_four_col_content_type_category( $control, $col = 1 ) {
+	$type = $control->manager->get_setting( 'news_record_four_col_' . $col . '_content_type' )->value();
+	return news_record_if_four_col_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_four_col_content_type_tag( $control, $col = 1 ) {
+	$type = $control->manager->get_setting( 'news_record_four_col_' . $col . '_content_type' )->value();
+	return news_record_if_four_col_enabled( $control ) && ( 'tag' === $type );
+}
+function news_record_four_col_1_content_type_category( $control ) { return news_record_four_col_content_type_category( $control, 1 ); }
+function news_record_four_col_1_content_type_tag( $control ) { return news_record_four_col_content_type_tag( $control, 1 ); }
+function news_record_four_col_2_content_type_category( $control ) { return news_record_four_col_content_type_category( $control, 2 ); }
+function news_record_four_col_2_content_type_tag( $control ) { return news_record_four_col_content_type_tag( $control, 2 ); }
+function news_record_four_col_3_content_type_category( $control ) { return news_record_four_col_content_type_category( $control, 3 ); }
+function news_record_four_col_3_content_type_tag( $control ) { return news_record_four_col_content_type_tag( $control, 3 ); }
+function news_record_four_col_4_content_type_category( $control ) { return news_record_four_col_content_type_category( $control, 4 ); }
+function news_record_four_col_4_content_type_tag( $control ) { return news_record_four_col_content_type_tag( $control, 4 ); }
+
+/** Two-Col Sidebar section */
+function news_record_if_two_col_sidebar_enabled( $control ) {
+	return $control->manager->get_setting( 'news_record_two_col_sidebar_section_enable' )->value();
+}
+function news_record_two_col_sidebar_col1_content_type_category( $control ) {
+	$type = $control->manager->get_setting( 'news_record_two_col_sidebar_col1_content_type' )->value();
+	return news_record_if_two_col_sidebar_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_two_col_sidebar_col1_content_type_tag( $control ) {
+	$type = $control->manager->get_setting( 'news_record_two_col_sidebar_col1_content_type' )->value();
+	return news_record_if_two_col_sidebar_enabled( $control ) && ( 'tag' === $type );
+}
+function news_record_two_col_sidebar_col2_content_type_category( $control ) {
+	$type = $control->manager->get_setting( 'news_record_two_col_sidebar_col2_content_type' )->value();
+	return news_record_if_two_col_sidebar_enabled( $control ) && ( 'category' === $type );
+}
+function news_record_two_col_sidebar_col2_content_type_tag( $control ) {
+	$type = $control->manager->get_setting( 'news_record_two_col_sidebar_col2_content_type' )->value();
+	return news_record_if_two_col_sidebar_enabled( $control ) && ( 'tag' === $type );
+}
+
 /* ============================================================
    TRI-COLUMN DEFAULT LAYOUT SECTION
    ============================================================ */
@@ -882,6 +924,143 @@ for ( $col = 1; $col <= 3; $col++ ) {
 /* ============================================================
    6. TRAVEL SECTION
    ============================================================ */
+
+/* ============================================================
+   6a. DEFAULT LAYOUT 4 COLUMN
+   ============================================================ */
+
+$wp_customize->add_section(
+	'news_record_four_col_section',
+	array(
+		'title'    => esc_html__( 'Default Layout 4 Column', 'news-record' ),
+		'panel'    => 'news_record_frontpage_panel',
+		'priority' => 195,
+	)
+);
+
+// Enable toggle.
+$wp_customize->add_setting(
+	'news_record_four_col_section_enable',
+	array(
+		'default'           => false,
+		'sanitize_callback' => 'news_record_sanitize_checkbox',
+	)
+);
+$wp_customize->add_control(
+	new News_Record_Toggle_Checkbox_Custom_control(
+		$wp_customize,
+		'news_record_four_col_section_enable',
+		array(
+			'label'    => esc_html__( 'Enable 4 Column Section', 'news-record' ),
+			'type'     => 'checkbox',
+			'settings' => 'news_record_four_col_section_enable',
+			'section'  => 'news_record_four_col_section',
+		)
+	)
+);
+
+for ( $col = 1; $col <= 4; $col++ ) {
+	// Title
+	$wp_customize->add_setting(
+		'news_record_four_col_' . $col . '_title',
+		array(
+			'default'           => 'Column ' . $col,
+			'sanitize_callback' => 'sanitize_text_field',
+		)
+	);
+	$wp_customize->add_control(
+		'news_record_four_col_' . $col . '_title',
+		array(
+			'label'           => sprintf( esc_html__( 'Column %d Title', 'news-record' ), $col ),
+			'section'         => 'news_record_four_col_section',
+			'active_callback' => 'news_record_if_four_col_enabled',
+		)
+	);
+
+	// Content Type
+	$wp_customize->add_setting(
+		'news_record_four_col_' . $col . '_content_type',
+		array(
+			'default'           => 'recent',
+			'sanitize_callback' => 'news_record_sanitize_select',
+		)
+	);
+	$wp_customize->add_control(
+		'news_record_four_col_' . $col . '_content_type',
+		array(
+			'label'           => sprintf( esc_html__( 'Column %d Content Type:', 'news-record' ), $col ),
+			'section'         => 'news_record_four_col_section',
+			'type'            => 'select',
+			'active_callback' => 'news_record_if_four_col_enabled',
+			'choices'         => array(
+				'recent'   => esc_html__( 'Recent Posts', 'news-record' ),
+				'category' => esc_html__( 'By Category', 'news-record' ),
+				'tag'      => esc_html__( 'By Tag', 'news-record' ),
+			),
+		)
+	);
+
+	// Category
+	$wp_customize->add_setting(
+		'news_record_four_col_' . $col . '_category',
+		array(
+			'default'           => '',
+			'sanitize_callback' => 'absint',
+		)
+	);
+	$wp_customize->add_control(
+		'news_record_four_col_' . $col . '_category',
+		array(
+			'label'           => sprintf( esc_html__( 'Column %d Category', 'news-record' ), $col ),
+			'section'         => 'news_record_four_col_section',
+			'type'            => 'select',
+			'choices'         => news_record_get_post_cat_choices(),
+			'active_callback' => 'news_record_four_col_' . $col . '_content_type_category',
+		)
+	);
+
+	// Tag
+	$wp_customize->add_setting(
+		'news_record_four_col_' . $col . '_tag',
+		array(
+			'default'           => '',
+			'sanitize_callback' => 'sanitize_text_field',
+		)
+	);
+	$wp_customize->add_control(
+		'news_record_four_col_' . $col . '_tag',
+		array(
+			'label'           => sprintf( esc_html__( 'Column %d Tag', 'news-record' ), $col ),
+			'section'         => 'news_record_four_col_section',
+			'type'            => 'select',
+			'choices'         => news_record_get_tag_choices(),
+			'active_callback' => 'news_record_four_col_' . $col . '_content_type_tag',
+		)
+	);
+
+	// Number of posts
+	$wp_customize->add_setting(
+		'news_record_four_col_' . $col . '_post_count',
+		array(
+			'default'           => 4,
+			'sanitize_callback' => 'absint',
+		)
+	);
+	$wp_customize->add_control(
+		'news_record_four_col_' . $col . '_post_count',
+		array(
+			'label'           => sprintf( esc_html__( 'Column %d Posts Count', 'news-record' ), $col ),
+			'section'         => 'news_record_four_col_section',
+			'type'            => 'number',
+			'input_attrs'     => array(
+				'min'  => 1,
+				'max'  => 10,
+				'step' => 1,
+			),
+			'active_callback' => 'news_record_if_four_col_enabled',
+		)
+	);
+}
 
 $wp_customize->add_section(
 	'news_record_travel_section',
@@ -2059,123 +2238,242 @@ $wp_customize->add_section(
 	)
 );
 
+/* ============================================================
+   15a. DEFAULT LAYOUT 2 COLUMN WITH SIDEBAR
+   ============================================================ */
+
+$wp_customize->add_section(
+	'news_record_two_col_sidebar_section',
+	array(
+		'title'    => esc_html__( 'Default Layout 2 Column with Sidebar', 'news-record' ),
+		'panel'    => 'news_record_frontpage_panel',
+		'priority' => 295,
+	)
+);
+
 $wp_customize->add_setting(
-	'news_record_technology_section_enable',
+	'news_record_two_col_sidebar_section_enable',
 	array(
 		'default'           => false,
 		'sanitize_callback' => 'news_record_sanitize_checkbox',
 	)
 );
+
 $wp_customize->add_control(
 	new News_Record_Toggle_Checkbox_Custom_control(
 		$wp_customize,
-		'news_record_technology_section_enable',
+		'news_record_two_col_sidebar_section_enable',
 		array(
-			'label'    => esc_html__( 'Enable Technology Section', 'news-record' ),
+			'label'    => esc_html__( 'Enable Default Layout 2 Column with Sidebar', 'news-record' ),
 			'type'     => 'checkbox',
-			'settings' => 'news_record_technology_section_enable',
-			'section'  => 'news_record_technology_section',
+			'settings' => 'news_record_two_col_sidebar_section_enable',
+			'section'  => 'news_record_two_col_sidebar_section',
 		)
 	)
 );
 
+// Column 1 Title
 $wp_customize->add_setting(
-	'news_record_technology_title',
+	'news_record_two_col_sidebar_col1_title',
 	array(
-		'default'           => __( 'Technology', 'news-record' ),
+		'default'           => esc_html__( 'Interviews', 'news-record' ),
 		'sanitize_callback' => 'sanitize_text_field',
 	)
 );
 $wp_customize->add_control(
-	'news_record_technology_title',
+	'news_record_two_col_sidebar_col1_title',
 	array(
-		'label'           => esc_html__( 'Section Title', 'news-record' ),
-		'section'         => 'news_record_technology_section',
-		'active_callback' => 'news_record_if_technology_enabled',
+		'label'           => esc_html__( 'Column 1 Title', 'news-record' ),
+		'section'         => 'news_record_two_col_sidebar_section',
+		'active_callback' => 'news_record_if_two_col_sidebar_enabled',
 	)
 );
 
-// Content Source.
+// Column 1 Content Type
 $wp_customize->add_setting(
-	'news_record_technology_content_type',
+	'news_record_two_col_sidebar_col1_content_type',
 	array(
 		'default'           => 'category',
 		'sanitize_callback' => 'news_record_sanitize_select',
 	)
 );
 $wp_customize->add_control(
-	'news_record_technology_content_type',
+	'news_record_two_col_sidebar_col1_content_type',
 	array(
-		'label'           => esc_html__( 'Content Source', 'news-record' ),
-		'section'         => 'news_record_technology_section',
+		'label'           => esc_html__( 'Column 1 Content Type:', 'news-record' ),
+		'section'         => 'news_record_two_col_sidebar_section',
 		'type'            => 'select',
 		'choices'         => array(
-			'recent'   => esc_html__( 'Recent', 'news-record' ),
-			'category' => esc_html__( 'Category', 'news-record' ),
-			'tag'      => esc_html__( 'Tag', 'news-record' ),
+			'recent'   => esc_html__( 'Recent Posts', 'news-record' ),
+			'category' => esc_html__( 'By Category', 'news-record' ),
+			'tag'      => esc_html__( 'By Tag', 'news-record' ),
 		),
-		'active_callback' => 'news_record_if_technology_enabled',
+		'active_callback' => 'news_record_if_two_col_sidebar_enabled',
 	)
 );
 
+// Column 1 Category
 $wp_customize->add_setting(
-	'news_record_technology_category',
+	'news_record_two_col_sidebar_col1_category',
 	array(
-		'default'           => 'technology',
-		'sanitize_callback' => 'sanitize_text_field',
+		'default'           => '',
+		'sanitize_callback' => 'absint',
 	)
 );
 $wp_customize->add_control(
-	'news_record_technology_category',
+	'news_record_two_col_sidebar_col1_category',
 	array(
-		'label'           => esc_html__( 'Category Slug', 'news-record' ),
-		'description'     => esc_html__( 'Enter the category slug to display posts from.', 'news-record' ),
-		'section'         => 'news_record_technology_section',
-		'type'            => 'text',
-		'active_callback' => 'news_record_if_technology_category_source',
+		'label'           => esc_html__( 'Column 1 Category', 'news-record' ),
+		'section'         => 'news_record_two_col_sidebar_section',
+		'type'            => 'select',
+		'choices'         => news_record_get_post_cat_choices(),
+		'active_callback' => 'news_record_two_col_sidebar_col1_content_type_category',
 	)
 );
 
-// Tag select.
+// Column 1 Tag
 $wp_customize->add_setting(
-	'news_record_technology_tag',
+	'news_record_two_col_sidebar_col1_tag',
 	array(
 		'default'           => '',
 		'sanitize_callback' => 'sanitize_text_field',
 	)
 );
 $wp_customize->add_control(
-	'news_record_technology_tag',
+	'news_record_two_col_sidebar_col1_tag',
 	array(
-		'label'           => esc_html__( 'Select Tag', 'news-record' ),
-		'section'         => 'news_record_technology_section',
+		'label'           => esc_html__( 'Column 1 Tag', 'news-record' ),
+		'section'         => 'news_record_two_col_sidebar_section',
 		'type'            => 'select',
 		'choices'         => news_record_get_tag_choices(),
-		'active_callback' => 'news_record_if_technology_tag_source',
+		'active_callback' => 'news_record_two_col_sidebar_col1_content_type_tag',
 	)
 );
 
+// Column 1 Posts Count
 $wp_customize->add_setting(
-	'news_record_technology_post_count',
+	'news_record_two_col_sidebar_col1_post_count',
 	array(
-		'default'           => 5,
+		'default'           => 4,
 		'sanitize_callback' => 'absint',
 	)
 );
 $wp_customize->add_control(
-	'news_record_technology_post_count',
+	'news_record_two_col_sidebar_col1_post_count',
 	array(
-		'label'           => esc_html__( 'Number of Posts', 'news-record' ),
-		'section'         => 'news_record_technology_section',
+		'label'           => esc_html__( 'Column 1 Posts Count', 'news-record' ),
+		'section'         => 'news_record_two_col_sidebar_section',
 		'type'            => 'number',
 		'input_attrs'     => array(
-			'min'  => 3,
+			'min'  => 1,
+			'max'  => 10,
+			'step' => 1,
+		),
+		'active_callback' => 'news_record_if_two_col_sidebar_enabled',
+	)
+);
+
+// Column 2 Title
+$wp_customize->add_setting(
+	'news_record_two_col_sidebar_col2_title',
+	array(
+		'default'           => esc_html__( 'In-Depth', 'news-record' ),
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_two_col_sidebar_col2_title',
+	array(
+		'label'           => esc_html__( 'Column 2 Title', 'news-record' ),
+		'section'         => 'news_record_two_col_sidebar_section',
+		'active_callback' => 'news_record_if_two_col_sidebar_enabled',
+	)
+);
+
+// Column 2 Content Type
+$wp_customize->add_setting(
+	'news_record_two_col_sidebar_col2_content_type',
+	array(
+		'default'           => 'category',
+		'sanitize_callback' => 'news_record_sanitize_select',
+	)
+);
+$wp_customize->add_control(
+	'news_record_two_col_sidebar_col2_content_type',
+	array(
+		'label'           => esc_html__( 'Column 2 Content Type:', 'news-record' ),
+		'section'         => 'news_record_two_col_sidebar_section',
+		'type'            => 'select',
+		'choices'         => array(
+			'recent'   => esc_html__( 'Recent Posts', 'news-record' ),
+			'category' => esc_html__( 'By Category', 'news-record' ),
+			'tag'      => esc_html__( 'By Tag', 'news-record' ),
+		),
+		'active_callback' => 'news_record_if_two_col_sidebar_enabled',
+	)
+);
+
+// Column 2 Category
+$wp_customize->add_setting(
+	'news_record_two_col_sidebar_col2_category',
+	array(
+		'default'           => '',
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_two_col_sidebar_col2_category',
+	array(
+		'label'           => esc_html__( 'Column 2 Category', 'news-record' ),
+		'section'         => 'news_record_two_col_sidebar_section',
+		'type'            => 'select',
+		'choices'         => news_record_get_post_cat_choices(),
+		'active_callback' => 'news_record_two_col_sidebar_col2_content_type_category',
+	)
+);
+
+// Column 2 Tag
+$wp_customize->add_setting(
+	'news_record_two_col_sidebar_col2_tag',
+	array(
+		'default'           => '',
+		'sanitize_callback' => 'sanitize_text_field',
+	)
+);
+$wp_customize->add_control(
+	'news_record_two_col_sidebar_col2_tag',
+	array(
+		'label'           => esc_html__( 'Column 2 Tag', 'news-record' ),
+		'section'         => 'news_record_two_col_sidebar_section',
+		'type'            => 'select',
+		'choices'         => news_record_get_tag_choices(),
+		'active_callback' => 'news_record_two_col_sidebar_col2_content_type_tag',
+	)
+);
+
+// Column 2 Posts Count
+$wp_customize->add_setting(
+	'news_record_two_col_sidebar_col2_post_count',
+	array(
+		'default'           => 7,
+		'sanitize_callback' => 'absint',
+	)
+);
+$wp_customize->add_control(
+	'news_record_two_col_sidebar_col2_post_count',
+	array(
+		'label'           => esc_html__( 'Column 2 Posts Count', 'news-record' ),
+		'section'         => 'news_record_two_col_sidebar_section',
+		'type'            => 'number',
+		'input_attrs'     => array(
+			'min'  => 1,
 			'max'  => 12,
 			'step' => 1,
 		),
-		'active_callback' => 'news_record_if_technology_enabled',
+		'active_callback' => 'news_record_if_two_col_sidebar_enabled',
 	)
 );
+
 
 /* ============================================================
    16. FEATURED CATEGORY SECTION

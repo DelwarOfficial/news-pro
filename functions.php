@@ -213,6 +213,30 @@ function news_record_widgets_init() {
 
 	register_sidebar(
 		array(
+			'name'          => esc_html__( 'Two-Column Left Sidebar', 'news-record' ),
+			'id'            => 'two-col-left-sidebar',
+			'description'   => esc_html__( 'Widgets for the left sidebar in Default Layout 2 Column with Sidebar section.', 'news-record' ),
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h3 class="widget-title">',
+			'after_title'   => '</h3>',
+		)
+	);
+
+	register_sidebar(
+		array(
+			'name'          => esc_html__( 'Two-Column Right Sidebar', 'news-record' ),
+			'id'            => 'two-col-right-sidebar',
+			'description'   => esc_html__( 'Widgets for the right sidebar in Default Layout 2 Column with Sidebar section.', 'news-record' ),
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h3 class="widget-title">',
+			'after_title'   => '</h3>',
+		)
+	);
+
+	register_sidebar(
+		array(
 			'name'          => esc_html__( 'Above Footer Widgets Area', 'news-record' ),
 			'id'            => 'above-footer-widgets-area',
 			'description'   => esc_html__( 'Add above footer widgets here.', 'news-record' ),
