@@ -17,7 +17,7 @@ get_header();
 			<h1 class="page-title"><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'news-record' ); ?></h1>
 		</header><!-- .page-header -->
 
-		<div class="page-content">
+		<div class="page-content tw-bg-gray-50 tw-p-8 tw-rounded-xl tw-border tw-border-gray-200 tw-text-center tw-mt-8 tw-shadow-sm">
 
 			<p><?php esc_html_e( 'It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'news-record' ); ?></p>
 
