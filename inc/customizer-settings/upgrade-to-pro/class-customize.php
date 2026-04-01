@@ -67,18 +67,7 @@ final class News_Record_Customize {
 		// Register custom section types.
 		$manager->register_section_type( 'News_Record_Customize_Section_Pro' );
 
-		// Register sections.
-		$manager->add_section(
-			new News_Record_Customize_Section_Pro(
-				$manager,
-				'news-record',
-				array(
-					'title'    => esc_html__( 'News Record Pro','news-record' ),
-					'pro_text' => esc_html__( 'Go Pro','news-record' ),
-					'pro_url'  => esc_url( 'https://artifythemes.com/artify_themes/news-record-pro/' )
-				)
-			)
-		);
+		// Pro upsell section intentionally omitted.
 	}
 
 	/**

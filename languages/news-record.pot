@@ -728,7 +728,7 @@ msgid "Theme Options"
 msgstr ""
 
 #: inc/customizer-settings/upgrade-to-pro/class-customize.php:76
-msgid "News Record Pro"
+msgid "News Pro"
 msgstr ""
 
 #: inc/customizer-settings/upgrade-to-pro/class-customize.php:77
