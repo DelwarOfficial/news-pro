@@ -11,13 +11,15 @@ get_header();
 
 ?>
 
-<main id="primary" class="site-main">
+<main id="primary" class="site-main max-w-5xl mx-auto px-4 py-6">
 
 	<?php
 	while ( have_posts() ) :
 		the_post();
 
-		get_template_part( 'template-parts/content', 'single' );
+        echo '<div class="mb-10">';
+        get_template_part( 'template-parts/content', 'single' );
+        echo '</div>';
 
 		the_post_navigation(
 			array(
@@ -40,11 +42,11 @@ get_header();
 			if ( $query->have_posts() ) :
 				$related_title = get_theme_mod( 'news_record_related_posts_title', __( 'Related Posts', 'news-record' ) );
 				?>
-				<div class="related-posts">
+                <div class="related-posts mt-10">
 					<?php if ( ! empty( $related_title ) ) : ?>
 						<h2 class="related-title"><?php echo esc_html( $related_title ); ?></h2>
 					<?php endif; ?>
-					<div class="related-post-container">
+                    <div class="related-post-container grid gap-6 md:grid-cols-3">
 						<?php
 						while ( $query->have_posts() ) :
 							$query->the_post();

@@ -10,14 +10,14 @@
 get_header();
 ?>
 
-<main id="primary" class="site-main">
+<main id="primary" class="site-main max-w-3xl mx-auto px-4 py-10">
 
-	<section class="error-404 not-found">
-		<header class="page-header">
-			<h1 class="page-title"><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'news-record' ); ?></h1>
-		</header><!-- .page-header -->
+	<section class="error-404 not-found space-y-6">
+        <header class="page-header text-center">
+            <h1 class="page-title"><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'news-record' ); ?></h1>
+        </header><!-- .page-header -->
 
-		<div class="page-content tw-bg-gray-50 tw-p-8 tw-rounded-xl tw-border tw-border-gray-200 tw-text-center tw-mt-8 tw-shadow-sm">
+		<div class="page-content bg-gray-50 p-8 rounded-xl border border-gray-200 text-center mt-4 shadow-sm">
 
 			<p><?php esc_html_e( 'It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'news-record' ); ?></p>
 

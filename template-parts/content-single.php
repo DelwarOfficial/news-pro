@@ -9,22 +9,19 @@
 
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'prose max-w-none' ); ?>>
 
-	<div class="single-page">
-			<div class="page-header-content">
-				<div class="entry-cat">
-					<?php news_record_categories_list(); ?>
-				</div>
+	<div class="single-page space-y-4">
+			<div class="page-header-content space-y-3">
 				<?php if ( is_singular() ) : ?>
 					<header class="entry-header">
-						<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
+						<?php the_title( '<h1 class="entry-title text-3xl font-bold leading-tight">', '</h1>' ); ?>
 					</header><!-- .entry-header -->
 					<?php
 					if ( 'post' === get_post_type() ) :
 						setup_postdata( get_post() );
 						?>
-						<ul class="entry-meta">
+						<ul class="entry-meta flex items-center gap-4 text-sm text-gray-600">
 							<?php
 								news_record_posted_by();
 								news_record_posted_on();
@@ -37,11 +34,11 @@
 
 				<?php
 				if ( has_excerpt() ) {
-					the_excerpt();
+					echo '<div class="text-gray-700">' . wp_kses_post( get_the_excerpt() ) . '</div>';
 				}
 				?>
 			</div>
-		<?php news_record_post_thumbnail(); ?>
+		<div class="overflow-hidden rounded-xl"><?php news_record_post_thumbnail(); ?></div>
 	</div>
 
 	<div class="entry-content">

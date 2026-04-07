@@ -26,8 +26,8 @@
 <footer id="colophon" class="site-footer">
 	<?php if ( is_active_sidebar( 'footer-1' ) || is_active_sidebar( 'footer-2' ) || is_active_sidebar( 'footer-3' ) || is_active_sidebar( 'footer-4' ) ) : ?>
 	<div class="upper-footer">
-		<div class="site-container-width">
-			<div class="upper-footer-container">
+		<div class="site-container-width max-w-7xl mx-auto px-4">
+			<div class="upper-footer-container grid gap-6 md:grid-cols-2 lg:grid-cols-4">
 
 				<?php for ( $i = 1; $i <= 4; $i++ ) { ?>
 					<div class="footer-widget-block">
@@ -41,8 +41,8 @@
 <?php endif; ?>
 
 	<div class="footer-brand-section">
-		<div class="site-container-width">
-			<div class="footer-brand-wrapper">
+		<div class="site-container-width max-w-7xl mx-auto px-4">
+			<div class="footer-brand-wrapper flex items-center justify-between gap-4 flex-wrap">
 				<div class="footer-brand-logo">
 					<?php if ( has_custom_logo() ) : ?>
 						<?php the_custom_logo(); ?>
@@ -67,19 +67,19 @@ $copyright_text     = get_theme_mod( 'news_record_copyright_txt', $copyright_def
 $copyright_text     = str_replace( $news_record_search, $replace, $copyright_text );
 	?>
 	<div class="lower-footer">
-		<div class="site-container-width">
-			<div class="lower-footer-info">
+		<div class="site-container-width max-w-7xl mx-auto px-4">
+			<div class="lower-footer-info flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
 				<?php if ( get_theme_mod( 'news_record_footer_newsletter_enable', true ) ) : ?>
-				<div class="footer-newsletter">
+				<div class="footer-newsletter max-w-xl">
 					<h4><?php echo esc_html( get_theme_mod( 'news_record_footer_newsletter_title', esc_html__( 'Subscribe to Newsletter', 'news-record' ) ) ); ?></h4>
 					<p><?php echo esc_html( get_theme_mod( 'news_record_footer_newsletter_desc', esc_html__( 'Get the latest news and updates delivered to your inbox.', 'news-record' ) ) ); ?></p>
-					<form class="newsletter-form" action="#" method="post">
-						<input type="email" name="email" placeholder="<?php esc_attr_e( 'Enter your email', 'news-record' ); ?>" required>
-						<button type="submit"><?php echo esc_html( get_theme_mod( 'news_record_footer_newsletter_button', esc_html__( 'Subscribe', 'news-record' ) ) ); ?></button>
+					<form class="newsletter-form flex flex-col sm:flex-row gap-3" action="#" method="post">
+						<input class="flex-1 px-3 py-2 rounded" type="email" name="email" placeholder="<?php esc_attr_e( 'Enter your email', 'news-record' ); ?>" required>
+						<button class="px-4 py-2 rounded bg-primary text-white" type="submit"><?php echo esc_html( get_theme_mod( 'news_record_footer_newsletter_button', esc_html__( 'Subscribe', 'news-record' ) ) ); ?></button>
 					</form>
 				</div>
 				<?php endif; ?>
-				<div class="site-info">
+				<div class="site-info text-sm text-gray-700">
 					<span>
 						<?php echo wp_kses_post( $copyright_text ); ?>
 						<?php echo sprintf( esc_html__( 'Theme: %1$s By %2$s.', 'news-record' ), wp_get_theme()->get( 'Name' ), '<a href="' . wp_get_theme()->get( 'AuthorURI' ) . '">' . wp_get_theme()->get( 'Author' ) . '</a>' ); ?>	

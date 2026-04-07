@@ -42,8 +42,8 @@
 
 		<header id="masthead" class="site-header">
 			<div class="topbar">
-				<div class="site-container-width">
-					<div class="topbar-wrapper">
+				<div class="site-container-width max-w-7xl mx-auto px-4">
+					<div class="topbar-wrapper flex items-center justify-between gap-4">
 						<div class="topbar-date">
 							<span class="current-date"><?php echo date_i18n('l, F j, Y'); ?></span>
 						</div>
@@ -52,7 +52,7 @@
 							if ( has_nav_menu( 'social' ) ) {
 								wp_nav_menu(
 									array(
-										'menu_class'  => 'menu social-links',
+										'menu_class'  => 'menu social-links flex items-center gap-3',
 										'link_before' => '<span class="screen-reader-text">',
 										'link_after'  => '</span>',
 										'theme_location' => 'social',
@@ -73,8 +73,8 @@
 						<img src="<?php echo esc_url( get_header_image() ); ?>" alt="<?php esc_attr_e( 'Header Image', 'news-record' ); ?>">
 					</div>
 				<?php } ?>
-				<div class="site-container-width">
-					<div class="site-middle-header-wrapper">
+				<div class="site-container-width max-w-7xl mx-auto px-4">
+					<div class="site-middle-header-wrapper flex items-center justify-between gap-6 flex-wrap">
 						
 						<div class="social-icons">
 							<?php
@@ -91,7 +91,7 @@
 							?>
 						</div>
 						
-						<div class="site-branding">
+						<div class="site-branding flex items-center gap-4">
 							<?php if ( has_custom_logo() ) { ?>
 								<div class="site-logo">
 									<?php the_custom_logo(); ?>
@@ -122,7 +122,7 @@
 							<?php } ?>
 						</div>
 
-						<div class="mid-header-right">
+						<div class="mid-header-right flex items-center">
 							<?php if ( !empty( $header_btn ) ) { ?>
 								<span class="header-button">
 									<a href="<?php echo esc_url( $header_btn_url ); ?>"><?php echo esc_html( $header_btn ); ?></a>
@@ -136,11 +136,11 @@
 			</div>
 			
 			<div class="theme-main-header">
-				<div class="site-container-width">
+				<div class="site-container-width max-w-7xl mx-auto px-4">
 					<div class="theme-main-header-wrapper">
 						<div class="primary-nav">
-							<div class="primary-nav-container">
-								<div class="header-nav">
+							<div class="primary-nav-container flex items-center justify-between gap-4">
+								<div class="header-nav flex-1">
 									<nav id="site-navigation" class="main-navigation">
 										<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
 											<span></span>
@@ -159,7 +159,7 @@
 										?>
 									</nav><!-- #site-navigation -->
 								</div>
-								<div class="header-right">
+								<div class="header-right flex items-center gap-3">
 									<div class="header-search">
 										<div class="header-search-wrap">
 											<a href="#" title="Search" class="header-search-icon">

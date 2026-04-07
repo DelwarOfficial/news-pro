@@ -15,21 +15,21 @@
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+    <main id="primary" class="site-main max-w-7xl mx-auto px-4 py-6">
 
 		<?php
 		if ( have_posts() ) :
 
 			if ( is_home() && ! is_front_page() ) :
 				?>
-				<header>
-					<h1 class="page-title screen-reader-text"><?php single_post_title(); ?></h1>
-				</header>
+                <header class="mb-4">
+                    <h1 class="page-title screen-reader-text"><?php single_post_title(); ?></h1>
+                </header>
 				<?php
 				$breadcrumb_enable = get_theme_mod( 'news_record_breadcrumb_enable', true );
 				if ( $breadcrumb_enable ) :
 					?>
-				<div id="breadcrumb-list">
+                <div id="breadcrumb-list" class="mb-6 text-sm text-gray-600">
 					<?php
 					echo news_record_breadcrumb(
 						array(
@@ -52,7 +52,9 @@ get_header();
 				 * If you want to override this in a child theme, then include a file
 				 * called content-___.php (where ___ is the Post Type name) and that will be used instead.
 				 */
-				get_template_part( 'template-parts/content', get_post_type() );
+                echo '<div class="mb-8">';
+                get_template_part( 'template-parts/content', get_post_type() );
+                echo '</div>';
 
 			endwhile;
 

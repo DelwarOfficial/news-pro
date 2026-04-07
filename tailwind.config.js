@@ -1,17 +1,14 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./*.php",
-    "./inc/**/*.php",
-    "./template-parts/**/*.php",
-    "./assets/js/**/*.js"
+    './**/*.php',
+    './assets/js/**/*.js',
+    './src/css/**/*.css',
   ],
-  prefix: 'tw-',
   corePlugins: {
-    preflight: false, // Disabling preflight preserves existing theme styles and browser defaults
+    preflight: false, // Enable later in final purge phase.
   },
   theme: {
     extend: {},
   },
   plugins: [],
-}
+};

@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+	/* Import legacy theme styles into the components layer so Tailwind compiles everything into one output. */
+	@import "../../style.css";
+}

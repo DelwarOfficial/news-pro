@@ -276,4 +276,127 @@ function news_record_scripts() {
 add_action( 'wp_enqueue_scripts', 'news_record_scripts' );
 
 
+/**
+ * Inject Tailwind-friendly classes into core-generated nav, body, post, and widget markup.
+ */
+
+// Navigation: simple walker to add utility classes to li/a.
+class News_Record_Tailwind_Walker extends Walker_Nav_Menu {
+	public function start_lvl( &$output, $depth = 0, $args = null ) {
+		$indent = str_repeat( "\t", $depth );
+		$output .= "\n$indent<ul class=\"sub-menu space-y-2\">\n";
+	}
+
+	public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
+		$classes   = empty( $item->classes ) ? array() : (array) $item->classes;
+		$classes[] = 'tw-nav-item';
+
+		$class_names = join( ' ', array_filter( $classes ) );
+		$class_names = $class_names ? ' class="' . esc_attr( $class_names ) . '"' : '';
+
+		$output .= '<li' . $class_names . '>';
+
+		$atts           = array();
+		$atts['title']  = ! empty( $item->attr_title ) ? $item->attr_title : '';
+		$atts['target'] = ! empty( $item->target ) ? $item->target : '';
+		$atts['rel']    = ! empty( $item->xfn ) ? $item->xfn : '';
+		$atts['href']   = ! empty( $item->url ) ? $item->url : '';
+
+		$atts       = apply_filters( 'nav_menu_link_attributes', $atts, $item, $args, $depth );
+		$attributes = '';
+		foreach ( $atts as $attr => $value ) {
+			if ( ! empty( $value ) ) {
+				$value       = ( 'href' === $attr ) ? esc_url( $value ) : esc_attr( $value );
+				$attributes .= ' ' . $attr . '="' . $value . '"';
+			}
+		}
+
+		$title      = apply_filters( 'the_title', $item->title, $item->ID );
+		$item_output  = $args->before;
+		$item_output .= '<a class="inline-flex items-center gap-2 py-2 px-3 rounded hover:bg-gray-100"' . $attributes . '>';
+		$item_output .= $args->link_before . $title . $args->link_after;
+		$item_output .= '</a>';
+		$item_output .= $args->after;
+
+		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
+	}
+}
+
+function news_record_tailwind_primary_menu_args( $args ) {
+	if ( isset( $args['theme_location'] ) && 'primary' === $args['theme_location'] ) {
+		$args['walker']     = new News_Record_Tailwind_Walker();
+		$args['menu_class'] = 'flex flex-wrap items-center gap-2 text-base font-medium';
+	}
+	return $args;
+}
+add_filter( 'wp_nav_menu_args', 'news_record_tailwind_primary_menu_args' );
+
+
+// Body class: add a utility-friendly baseline.
+function news_record_tailwind_body_class( $classes ) {
+	$classes[] = 'min-h-screen';
+	$classes[] = 'bg-white';
+	return $classes;
+}
+add_filter( 'body_class', 'news_record_tailwind_body_class' );
+
+// Post class: ensure spacing and full-width cards where applicable.
+function news_record_tailwind_post_class( $classes ) {
+	$classes[] = 'space-y-3';
+	return $classes;
+}
+add_filter( 'post_class', 'news_record_tailwind_post_class' );
+
+// Widget class: apply consistent padding/spacing.
+function news_record_tailwind_widget_params( $params ) {
+	$params[0]['before_widget'] = '<section id="' . $params[0]['widget_id'] . '" class="widget ' . implode( ' ', $params[0]['widget_name'] ? array( sanitize_title( $params[0]['widget_name'] ) ) : array() ) . ' bg-white rounded-lg shadow-sm p-4 mb-6">';
+	$params[0]['before_title']  = '<h2 class="widget-title text-lg font-semibold mb-3">';
+	$params[0]['after_title']   = '</h2>';
+	return $params;
+}
+add_filter( 'dynamic_sidebar_params', 'news_record_tailwind_widget_params' );
+
+/**
+ * Add social icons to the social menu based on link URL.
+ */
+function news_record_social_menu_icons( $item_output, $item, $depth, $args ) {
+	if ( isset( $args->theme_location ) && 'social' === $args->theme_location ) {
+		$url = $item->url;
+		$icon_class = 'fas fa-link'; // Default icon
+		
+		$networks = array(
+			'facebook.com'  => 'fab fa-facebook-f',
+			'twitter.com'   => 'fab fa-x-twitter',
+			'x.com'         => 'fab fa-x-twitter',
+			'instagram.com' => 'fab fa-instagram',
+			'linkedin.com'  => 'fab fa-linkedin-in',
+			'youtube.com'   => 'fab fa-youtube',
+			'pinterest.com' => 'fab fa-pinterest-p',
+			'github.com'    => 'fab fa-github',
+			'tiktok.com'    => 'fab fa-tiktok',
+			'twitch.tv'     => 'fab fa-twitch',
+			'whatsapp.com'  => 'fab fa-whatsapp',
+			'telegram.org'  => 'fab fa-telegram',
+			'discord.com'   => 'fab fa-discord',
+		);
+		
+		foreach ( $networks as $domain => $class ) {
+			if ( strpos( $url, $domain ) !== false ) {
+				$icon_class = $class;
+				break;
+			}
+		}
+		
+		$icon = '<i class="' . esc_attr( $icon_class ) . '"></i>';
+		
+		if ( ! empty( $args->link_before ) ) {
+			$item_output = str_replace( $args->link_before, $icon . $args->link_before, $item_output );
+		} else {
+			$item_output = preg_replace( '/(<a[^>]*>)/', '$1' . $icon, $item_output );
+		}
+	}
+	return $item_output;
+}
+add_filter( 'walker_nav_menu_start_el', 'news_record_social_menu_icons', 10, 4 );
+
 require get_template_directory() . '/inc/require.php';
